@@ -1,159 +1,624 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Warung Kami - Menu & Kasir</title>
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
-  body { background: #fdf6e3; color: #333; line-height: 1.6; }
-  header { background: linear-gradient(135deg, #e67e22, #d35400); color: white; text-align: center; padding: 2rem 1rem; }
-  header h1 { font-size: 2rem; }
-  header p { opacity: 0.9; }
-  main { max-width: 900px; margin: 2rem auto; padding: 0 1rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
-  @media (max-width: 700px) { main { grid-template-columns: 1fr; } }
-  section { background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
-  h2 { color: #d35400; border-bottom: 3px solid #e67e22; display: inline-block; padding-bottom: 0.3rem; margin-bottom: 1rem; }
-  h3 { margin: 1rem 0 0.5rem; color: #555; }
-  .menu-list { list-style: none; }
-  .menu-list li { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px dashed #ddd; }
-  .menu-list li span { color: #e67e22; font-weight: bold; }
-  .info-diskon { margin-top: 1rem; padding: 0.6rem; background: #fff3cd; border-left: 4px solid #f39c12; border-radius: 6px; font-size: 0.9rem; }
-  .form-group { margin-bottom: 0.8rem; }
-  .form-group label { display: block; font-weight: bold; margin-bottom: 0.3rem; font-size: 0.9rem; }
-  .form-group input { width: 100%; padding: 0.6rem; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; }
-  #btnHitung { width: 100%; padding: 0.8rem; background: #e67e22; color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 0.5rem; }
-  #btnHitung:hover { background: #d35400; }
-  .struk { margin-top: 1.5rem; padding: 1rem; border: 2px dashed #e67e22; border-radius: 10px; background: #fffaf0; }
-  .struk h3 { text-align: center; margin-bottom: 0.8rem; }
-  .struk p { display: flex; justify-content: space-between; padding: 0.2rem 0; }
-  .struk hr { margin: 0.6rem 0; border: none; border-top: 1px dashed #aaa; }
-  .kembalian { color: #27ae60; font-size: 1.1rem; }
-  .terimakasih { display: block !important; text-align: center; margin-top: 0.8rem; font-style: italic; font-size: 0.9rem; color: #666; }
-  .hidden { display: none; }
-  footer { text-align: center; padding: 1rem; background: #333; color: white; margin-top: 2rem; }
-</style>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Sistem Order Makanan</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #166534;
+    }
+
+    .subjudul {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #666;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0 25px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: center;
+    }
+
+    th {
+      background: #166534;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background: #f9fafb;
+    }
+
+    input {
+      padding: 9px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    input[type="number"] {
+      width: 75px;
+    }
+
+    .btn {
+      border: none;
+      padding: 10px 14px;
+      border-radius: 5px;
+      cursor: pointer;
+      color: white;
+      font-weight: bold;
+    }
+
+    .btn-tambah {
+      background: #16a34a;
+    }
+
+    .btn-bayar {
+      background: #2563eb;
+    }
+
+    .btn-reset {
+      background: #dc2626;
+    }
+
+    .btn:hover {
+      opacity: 0.85;
+    }
+
+    .pembayaran {
+      background: #f0fdf4;
+      padding: 18px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+
+    .pembayaran input {
+      width: 100%;
+      margin: 8px 0 12px;
+    }
+
+    .total {
+      font-size: 20px;
+      font-weight: bold;
+      color: #166534;
+    }
+
+    .pesan {
+      margin: 12px 0;
+      font-weight: bold;
+    }
+
+    .sukses {
+      color: #15803d;
+    }
+
+    .error {
+      color: #dc2626;
+    }
+
+    .struk {
+      border: 2px dashed #999;
+      padding: 18px;
+      margin-top: 25px;
+      background: #fff;
+    }
+
+    .struk h2 {
+      color: #333;
+    }
+
+    .struk table th {
+      background: #555;
+    }
+
+    .struk table td,
+    .struk table th {
+      padding: 8px;
+    }
+
+    .aksi {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 8px;
+      }
+
+      .container {
+        padding: 12px;
+      }
+
+      th, td {
+        padding: 7px 4px;
+        font-size: 12px;
+      }
+
+      h1 {
+        font-size: 23px;
+      }
+    }
+
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+
+      #struk, #struk * {
+        visibility: visible;
+      }
+
+      #struk {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        box-sizing: border-box;
+        border: none;
+      }
+
+      .struk table th {
+        color: black;
+        background: white;
+      }
+    }
+  </style>
 </head>
+
 <body>
+  <div class="container">
 
-<header>
-  <h1>🍜 Warung Kami</h1>
-  <p>Menu Makanan & Minuman</p>
-</header>
+    <h1>🍽️ Sistem Order Makanan</h1>
+    <p class="subjudul">
+      Selamat datang di restoran kami!
+    </p>
 
-<main>
-  <!-- DAFTAR MENU -->
-  <section>
     <h2>Daftar Menu</h2>
 
-    <h3>🍚 Makanan</h3>
-    <ul class="menu-list">
-      <li>Nasi Goreng <span>Rp 15.000</span></li>
-      <li>Mie Ayam <span>Rp 12.000</span></li>
-      <li>Ayam Geprek <span>Rp 18.000</span></li>
-      <li>Sate Usus <span>Rp 10.000</span></li>
-    </ul>
+    <table>
+      <thead>
+        <tr>
+          <th>Kode</th>
+          <th>Nama Menu</th>
+          <th>Harga</th>
+          <th>Jumlah</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="daftarMenu"></tbody>
+    </table>
 
-    <h3>🥤 Minuman</h3>
-    <ul class="menu-list">
-      <li>Es Teh <span>Rp 5.000</span></li>
-      <li>Es Jeruk <span>Rp 7.000</span></li>
-      <li>Kopi Hitam <span>Rp 8.000</span></li>
-      <li>Air Mineral <span>Rp 6.000</span></li>
-    </ul>
+    <h2>Keranjang Pesanan</h2>
 
-    <p class="info-diskon">💥 Diskon 10% untuk pembelian di atas Rp 50.000!</p>
-  </section>
+    <table>
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>Nama Menu</th>
+          <th>Harga Satuan</th>
+          <th>Jumlah</th>
+          <th>Subtotal</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="daftarKeranjang">
+        <tr>
+          <td colspan="6">Belum ada pesanan.</td>
+        </tr>
+      </tbody>
+    </table>
 
-  <!-- FORM KASIR -->
-  <section>
-    <h2>Form Pemesanan</h2>
+    <p class="total">
+      Total Bayar: <span id="totalBayar">Rp 0</span>
+    </p>
 
-    <div class="form-group">
-      <label for="nama">Nama Pelanggan</label>
-      <input type="text" id="nama" placeholder="Contoh: Budi">
+    <div class="pembayaran">
+      <h2>Pembayaran Tunai</h2>
+
+      <label for="uangBayar">Masukkan uang pembayaran (Rp):</label>
+      <input
+        type="number"
+        id="uangBayar"
+        min="0"
+        step="1"
+        placeholder="Contoh: 50000"
+      >
+
+      <div class="aksi">
+        <button class="btn btn-bayar" onclick="prosesPembayaran()">
+          Bayar & Cetak Struk
+        </button>
+
+        <button class="btn btn-reset" onclick="resetPesanan()">
+          Reset Pesanan
+        </button>
+      </div>
+
+      <p id="pesan" class="pesan"></p>
     </div>
 
-    <div class="form-group">
-      <label for="meja">Nomor Meja</label>
-      <input type="number" id="meja" placeholder="Contoh: 5" min="1">
+    <div id="struk" class="struk" hidden>
+      <h2>STRUK PESANAN</h2>
+      <p id="tanggalStruk"></p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Nama Menu</th>
+            <th>Jumlah</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody id="isiStruk"></tbody>
+      </table>
+
+      <p><strong>Total Bayar:</strong> <span id="strukTotal"></span></p>
+      <p><strong>Uang Bayar:</strong> <span id="strukBayar"></span></p>
+      <p><strong>Kembalian:</strong> <span id="strukKembalian"></span></p>
+
+      <h3 style="text-align:center">
+        Terima kasih sudah memesan!
+      </h3>
+
+      <button
+        class="btn btn-bayar"
+        onclick="window.print()"
+      >
+        Cetak Struk
+      </button>
     </div>
 
-    <div class="form-group">
-      <label for="total">Total Belanja (Rp)</label>
-      <input type="number" id="total" placeholder="Contoh: 60000" min="0">
-    </div>
+  </div>
 
-    <div class="form-group">
-      <label for="uang">Uang Pelanggan (Rp)</label>
-      <input type="number" id="uang" placeholder="Contoh: 100000" min="0">
-    </div>
+  <script>
+    // Daftar menu restoran
+    const menu = {
+      "1": { nama: "Nasi Goreng", harga: 15000 },
+      "2": { nama: "Mie Goreng", harga: 12000 },
+      "3": { nama: "Ayam Penyet", harga: 18000 },
+      "4": { nama: "Es Teh", harga: 4000 },
+      "5": { nama: "Es Jeruk", harga: 5000 }
+    };
 
-    <button id="btnHitung">Hitung Kembalian</button>
+    // Keranjang menyimpan jumlah setiap kode menu
+    const keranjang = {};
 
-    <div id="struk" class="struk hidden">
-      <h3>🧾 Struk Pembayaran</h3>
-      <p><strong>Nama:</strong> <span id="outNama">-</span></p>
-      <p><strong>No. Meja:</strong> <span id="outMeja">-</span></p>
-      <p><strong>Total Belanja:</strong> Rp <span id="outTotal">0</span></p>
-      <p><strong>Diskon (10%):</strong> -Rp <span id="outDiskon">0</span></p>
-      <p><strong>Total Bayar:</strong> Rp <span id="outBayar">0</span></p>
-      <hr>
-      <p><strong>Uang Pelanggan:</strong> Rp <span id="outUang">0</span></p>
-      <p class="kembalian"><strong>Kembalian:</strong> Rp <span id="outKembalian">0</span></p>
-      <p class="terimakasih">Terima kasih sudah makan di Warung Kami! 🙏</p>
-    </div>
-  </section>
-</main>
+    let transaksiSelesai = false;
 
-<footer>
-  <p>&copy; 2025 Warung Kami - Dibuat dengan ❤️</p>
-</footer>
-
-<script>
-  const btnHitung = document.getElementById('btnHitung');
-  const struk = document.getElementById('struk');
-
-  btnHitung.addEventListener('click', function () {
-    const nama = document.getElementById('nama').value.trim();
-    const meja = document.getElementById('meja').value.trim();
-    const total = parseFloat(document.getElementById('total').value) || 0;
-    const uang = parseFloat(document.getElementById('uang').value) || 0;
-
-    if (!nama || !meja) {
-      alert('Nama pelanggan dan nomor meja wajib diisi!');
-      return;
+    // Format rupiah
+    function rupiah(angka) {
+      return "Rp " + angka.toLocaleString("id-ID");
     }
-    if (total <= 0) {
-      alert('Total belanja harus lebih dari 0!');
-      return;
+
+    // Menampilkan daftar menu
+    function tampilkanMenu() {
+      const tbody = document.getElementById("daftarMenu");
+      tbody.innerHTML = "";
+
+      for (const kode in menu) {
+        const item = menu[kode];
+        const tr = document.createElement("tr");
+
+        const tdKode = document.createElement("td");
+        tdKode.textContent = kode;
+
+        const tdNama = document.createElement("td");
+        tdNama.textContent = item.nama;
+
+        const tdHarga = document.createElement("td");
+        tdHarga.textContent = rupiah(item.harga);
+
+        const tdJumlah = document.createElement("td");
+        const input = document.createElement("input");
+        input.type = "number";
+        input.min = "1";
+        input.step = "1";
+        input.value = "1";
+        input.id = "jumlah-" + kode;
+        input.setAttribute("aria-label", "Jumlah " + item.nama);
+        tdJumlah.appendChild(input);
+
+        const tdAksi = document.createElement("td");
+        const tombol = document.createElement("button");
+        tombol.className = "btn btn-tambah";
+        tombol.textContent = "Tambah";
+        tombol.onclick = function() {
+          tambahPesanan(kode);
+        };
+        tdAksi.appendChild(tombol);
+
+        tr.append(tdKode, tdNama, tdHarga, tdJumlah, tdAksi);
+        tbody.appendChild(tr);
+      }
     }
-    if (uang < total) {
-      alert('Uang pelanggan kurang dari total belanja!');
-      return;
+
+    // Menambahkan menu ke keranjang
+    function tambahPesanan(kode) {
+      if (transaksiSelesai) {
+        tampilkanPesan(
+          "Transaksi sudah selesai. Reset untuk memulai pesanan baru.",
+          true
+        );
+        return;
+      }
+
+      const input = document.getElementById("jumlah-" + kode);
+      const jumlah = Number(input.value);
+
+      if (!Number.isSafeInteger(jumlah) || jumlah <= 0) {
+        tampilkanPesan(
+          "Jumlah harus berupa bilangan bulat lebih dari 0.",
+          true
+        );
+        input.focus();
+        return;
+      }
+
+      if (!menu[kode]) {
+        tampilkanPesan("Menu tidak tersedia.", true);
+        return;
+      }
+
+      const jumlahLama = keranjang[kode]
+        ? keranjang[kode].jumlah
+        : 0;
+
+      if (!Number.isSafeInteger(jumlahLama + jumlah)) {
+        tampilkanPesan("Jumlah pesanan terlalu besar.", true);
+        return;
+      }
+
+      if (!keranjang[kode]) {
+        keranjang[kode] = {
+          nama: menu[kode].nama,
+          harga: menu[kode].harga,
+          jumlah: 0
+        };
+      }
+
+      keranjang[kode].jumlah += jumlah;
+
+      input.value = "1";
+      document.getElementById("struk").hidden = true;
+
+      tampilkanKeranjang();
+
+      tampilkanPesan(
+        "Berhasil menambahkan " + jumlah + " " +
+        menu[kode].nama + " ke pesanan.",
+        false
+      );
     }
 
-    let diskon = 0;
-    if (total > 50000) {
-      diskon = total * 0.10;
+    // Menampilkan isi keranjang dan total
+    function tampilkanKeranjang() {
+      const tbody = document.getElementById("daftarKeranjang");
+      tbody.innerHTML = "";
+
+      let total = 0;
+      let nomor = 1;
+      let adaPesanan = false;
+
+      for (const kode in keranjang) {
+        const item = keranjang[kode];
+
+        if (item.jumlah <= 0) continue;
+
+        adaPesanan = true;
+        const subtotal = item.harga * item.jumlah;
+        total += subtotal;
+
+        const tr = document.createElement("tr");
+
+        const nilai = [
+          nomor++,
+          item.nama,
+          rupiah(item.harga),
+          item.jumlah,
+          rupiah(subtotal)
+        ];
+
+        nilai.forEach(function(nilaiTeks) {
+          const td = document.createElement("td");
+          td.textContent = nilaiTeks;
+          tr.appendChild(td);
+        });
+
+        const tdAksi = document.createElement("td");
+        const tombol = document.createElement("button");
+        tombol.className = "btn btn-reset";
+        tombol.textContent = "Hapus";
+        tombol.onclick = function() {
+          hapusPesanan(kode);
+        };
+
+        tdAksi.appendChild(tombol);
+        tr.appendChild(tdAksi);
+        tbody.appendChild(tr);
+      }
+
+      if (!adaPesanan) {
+        const tr = document.createElement("tr");
+        const td = document.createElement("td");
+        td.colSpan = 6;
+        td.textContent = "Belum ada pesanan.";
+        tr.appendChild(td);
+        tbody.appendChild(tr);
+      }
+
+      document.getElementById("totalBayar").textContent =
+        rupiah(total);
     }
 
-    const totalBayar = total - diskon;
-    const kembalian = uang - totalBayar;
+    // Menghapus satu jenis menu dari keranjang
+    function hapusPesanan(kode) {
+      if (transaksiSelesai) {
+        tampilkanPesan(
+          "Transaksi selesai. Reset untuk memulai pesanan baru.",
+          true
+        );
+        return;
+      }
 
-    const rupiah = (angka) => angka.toLocaleString('id-ID');
+      delete keranjang[kode];
 
-    document.getElementById('outNama').textContent = nama;
-    document.getElementById('outMeja').textContent = meja;
-    document.getElementById('outTotal').textContent = rupiah(total);
-    document.getElementById('outDiskon').textContent = rupiah(diskon);
-    document.getElementById('outBayar').textContent = rupiah(totalBayar);
-    document.getElementById('outUang').textContent = rupiah(uang);
-    document.getElementById('outKembalian').textContent = rupiah(kembalian);
+      document.getElementById("struk").hidden = true;
 
-    struk.classList.remove('hidden');
-  });
-</script>
+      tampilkanKeranjang();
+      tampilkanPesan("Menu berhasil dihapus dari keranjang.", false);
+    }
 
+    // Menghitung total belanja
+    function hitungTotal() {
+      let total = 0;
+
+      for (const kode in keranjang) {
+        total += keranjang[kode].harga * keranjang[kode].jumlah;
+      }
+
+      return total;
+    }
+
+    // Validasi pembayaran dan membuat struk
+    function prosesPembayaran() {
+      if (transaksiSelesai) {
+        tampilkanPesan(
+          "Transaksi sudah selesai. Reset untuk memulai transaksi baru.",
+          true
+        );
+        return;
+      }
+
+      if (Object.keys(keranjang).length === 0) {
+        tampilkanPesan("Keranjang masih kosong.", true);
+        return;
+      }
+
+      const inputBayar = document.getElementById("uangBayar");
+      const nilaiBayar = inputBayar.value;
+
+      if (
+        nilaiBayar.trim() === "" ||
+        !/^\d+$/.test(nilaiBayar) ||
+        !Number.isSafeInteger(Number(nilaiBayar))
+      ) {
+        tampilkanPesan(
+          "Masukkan nominal pembayaran berupa angka bulat yang valid.",
+          true
+        );
+        inputBayar.focus();
+        return;
+      }
+
+      const bayar = Number(nilaiBayar);
+      const total = hitungTotal();
+
+      if (bayar < total) {
+        tampilkanPesan(
+          "Uang Anda kurang! Total pembayaran " + rupiah(total) + ".",
+          true
+        );
+        return;
+      }
+
+      const kembalian = bayar - total;
+
+      // Membuat rincian struk
+      const tbody = document.getElementById("isiStruk");
+      tbody.innerHTML = "";
+
+      for (const kode in keranjang) {
+        const item = keranjang[kode];
+        const tr = document.createElement("tr");
+
+        [
+          item.nama,
+          item.jumlah,
+          rupiah(item.harga * item.jumlah)
+        ].forEach(function(teks) {
+          const td = document.createElement("td");
+          td.textContent = teks;
+          tr.appendChild(td);
+        });
+
+        tbody.appendChild(tr);
+      }
+
+      document.getElementById("tanggalStruk").textContent =
+        "Tanggal: " + new Date().toLocaleString("id-ID");
+
+      document.getElementById("strukTotal").textContent =
+        rupiah(total);
+
+      document.getElementById("strukBayar").textContent =
+        rupiah(bayar);
+
+      document.getElementById("strukKembalian").textContent =
+        rupiah(kembalian);
+
+      document.getElementById("struk").hidden = false;
+
+      transaksiSelesai = true;
+      tampilkanPesan("Pembayaran berhasil!", false);
+
+      // Cetak otomatis setelah struk selesai dibuat
+      window.print();
+    }
+
+    // Mengosongkan keranjang untuk transaksi berikutnya
+    function resetPesanan() {
+      for (const kode in keranjang) {
+        delete keranjang[kode];
+      }
+
+      transaksiSelesai = false;
+
+      document.getElementById("uangBayar").value = "";
+      document.getElementById("struk").hidden = true;
+
+      tampilkanKeranjang();
+      tampilkanPesan("Pesanan telah direset.", false);
+    }
+
+    function tampilkanPesan(teks, error) {
+      const pesan = document.getElementById("pesan");
+      pesan.textContent = teks;
+      pesan.className = error ? "pesan error" : "pesan sukses";
+    }
+
+    // Jalankan saat halaman dibuka
+    tampilkanMenu();
+    tampilkanKeranjang();
+  </script>
 </body>
 </html>
