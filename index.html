@@ -1,1 +1,159 @@
-file:///C:/Users/AL%20FAJR/Downloads/index.html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Warung Kami - Menu & Kasir</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+  body { background: #fdf6e3; color: #333; line-height: 1.6; }
+  header { background: linear-gradient(135deg, #e67e22, #d35400); color: white; text-align: center; padding: 2rem 1rem; }
+  header h1 { font-size: 2rem; }
+  header p { opacity: 0.9; }
+  main { max-width: 900px; margin: 2rem auto; padding: 0 1rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  @media (max-width: 700px) { main { grid-template-columns: 1fr; } }
+  section { background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+  h2 { color: #d35400; border-bottom: 3px solid #e67e22; display: inline-block; padding-bottom: 0.3rem; margin-bottom: 1rem; }
+  h3 { margin: 1rem 0 0.5rem; color: #555; }
+  .menu-list { list-style: none; }
+  .menu-list li { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px dashed #ddd; }
+  .menu-list li span { color: #e67e22; font-weight: bold; }
+  .info-diskon { margin-top: 1rem; padding: 0.6rem; background: #fff3cd; border-left: 4px solid #f39c12; border-radius: 6px; font-size: 0.9rem; }
+  .form-group { margin-bottom: 0.8rem; }
+  .form-group label { display: block; font-weight: bold; margin-bottom: 0.3rem; font-size: 0.9rem; }
+  .form-group input { width: 100%; padding: 0.6rem; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; }
+  #btnHitung { width: 100%; padding: 0.8rem; background: #e67e22; color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 0.5rem; }
+  #btnHitung:hover { background: #d35400; }
+  .struk { margin-top: 1.5rem; padding: 1rem; border: 2px dashed #e67e22; border-radius: 10px; background: #fffaf0; }
+  .struk h3 { text-align: center; margin-bottom: 0.8rem; }
+  .struk p { display: flex; justify-content: space-between; padding: 0.2rem 0; }
+  .struk hr { margin: 0.6rem 0; border: none; border-top: 1px dashed #aaa; }
+  .kembalian { color: #27ae60; font-size: 1.1rem; }
+  .terimakasih { display: block !important; text-align: center; margin-top: 0.8rem; font-style: italic; font-size: 0.9rem; color: #666; }
+  .hidden { display: none; }
+  footer { text-align: center; padding: 1rem; background: #333; color: white; margin-top: 2rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🍜 Warung Kami</h1>
+  <p>Menu Makanan & Minuman</p>
+</header>
+
+<main>
+  <!-- DAFTAR MENU -->
+  <section>
+    <h2>Daftar Menu</h2>
+
+    <h3>🍚 Makanan</h3>
+    <ul class="menu-list">
+      <li>Nasi Goreng <span>Rp 15.000</span></li>
+      <li>Mie Ayam <span>Rp 12.000</span></li>
+      <li>Ayam Geprek <span>Rp 18.000</span></li>
+      <li>Sate Usus <span>Rp 10.000</span></li>
+    </ul>
+
+    <h3>🥤 Minuman</h3>
+    <ul class="menu-list">
+      <li>Es Teh <span>Rp 5.000</span></li>
+      <li>Es Jeruk <span>Rp 7.000</span></li>
+      <li>Kopi Hitam <span>Rp 8.000</span></li>
+      <li>Air Mineral <span>Rp 6.000</span></li>
+    </ul>
+
+    <p class="info-diskon">💥 Diskon 10% untuk pembelian di atas Rp 50.000!</p>
+  </section>
+
+  <!-- FORM KASIR -->
+  <section>
+    <h2>Form Pemesanan</h2>
+
+    <div class="form-group">
+      <label for="nama">Nama Pelanggan</label>
+      <input type="text" id="nama" placeholder="Contoh: Budi">
+    </div>
+
+    <div class="form-group">
+      <label for="meja">Nomor Meja</label>
+      <input type="number" id="meja" placeholder="Contoh: 5" min="1">
+    </div>
+
+    <div class="form-group">
+      <label for="total">Total Belanja (Rp)</label>
+      <input type="number" id="total" placeholder="Contoh: 60000" min="0">
+    </div>
+
+    <div class="form-group">
+      <label for="uang">Uang Pelanggan (Rp)</label>
+      <input type="number" id="uang" placeholder="Contoh: 100000" min="0">
+    </div>
+
+    <button id="btnHitung">Hitung Kembalian</button>
+
+    <div id="struk" class="struk hidden">
+      <h3>🧾 Struk Pembayaran</h3>
+      <p><strong>Nama:</strong> <span id="outNama">-</span></p>
+      <p><strong>No. Meja:</strong> <span id="outMeja">-</span></p>
+      <p><strong>Total Belanja:</strong> Rp <span id="outTotal">0</span></p>
+      <p><strong>Diskon (10%):</strong> -Rp <span id="outDiskon">0</span></p>
+      <p><strong>Total Bayar:</strong> Rp <span id="outBayar">0</span></p>
+      <hr>
+      <p><strong>Uang Pelanggan:</strong> Rp <span id="outUang">0</span></p>
+      <p class="kembalian"><strong>Kembalian:</strong> Rp <span id="outKembalian">0</span></p>
+      <p class="terimakasih">Terima kasih sudah makan di Warung Kami! 🙏</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; 2025 Warung Kami - Dibuat dengan ❤️</p>
+</footer>
+
+<script>
+  const btnHitung = document.getElementById('btnHitung');
+  const struk = document.getElementById('struk');
+
+  btnHitung.addEventListener('click', function () {
+    const nama = document.getElementById('nama').value.trim();
+    const meja = document.getElementById('meja').value.trim();
+    const total = parseFloat(document.getElementById('total').value) || 0;
+    const uang = parseFloat(document.getElementById('uang').value) || 0;
+
+    if (!nama || !meja) {
+      alert('Nama pelanggan dan nomor meja wajib diisi!');
+      return;
+    }
+    if (total <= 0) {
+      alert('Total belanja harus lebih dari 0!');
+      return;
+    }
+    if (uang < total) {
+      alert('Uang pelanggan kurang dari total belanja!');
+      return;
+    }
+
+    let diskon = 0;
+    if (total > 50000) {
+      diskon = total * 0.10;
+    }
+
+    const totalBayar = total - diskon;
+    const kembalian = uang - totalBayar;
+
+    const rupiah = (angka) => angka.toLocaleString('id-ID');
+
+    document.getElementById('outNama').textContent = nama;
+    document.getElementById('outMeja').textContent = meja;
+    document.getElementById('outTotal').textContent = rupiah(total);
+    document.getElementById('outDiskon').textContent = rupiah(diskon);
+    document.getElementById('outBayar').textContent = rupiah(totalBayar);
+    document.getElementById('outUang').textContent = rupiah(uang);
+    document.getElementById('outKembalian').textContent = rupiah(kembalian);
+
+    struk.classList.remove('hidden');
+  });
+</script>
+
+</body>
+</html>
