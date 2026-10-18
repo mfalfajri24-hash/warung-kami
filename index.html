@@ -100,9 +100,14 @@
       margin-top: 20px;
     }
 
-    .pembayaran input {
+    .pembayaran input,
+    .pembayaran select {
       width: 100%;
       margin: 8px 0 12px;
+      padding: 9px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
     }
 
     .total {
@@ -148,6 +153,51 @@
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
+    }
+
+    .info-meja {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .info-meja label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .info-meja input,
+    .info-meja select {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 9px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    .ringkasan {
+      background: #fefce8;
+      border: 1px solid #fde047;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 15px;
+    }
+
+    .ringkasan p {
+      margin: 6px 0;
+    }
+
+    .ringkasan .total-akhir {
+      font-size: 20px;
+      font-weight: bold;
+      color: #166534;
+      border-top: 2px solid #166534;
+      padding-top: 8px;
+      margin-top: 10px;
     }
 
     @media (max-width: 600px) {
@@ -203,6 +253,26 @@
       Selamat datang di restoran kami!
     </p>
 
+    <!-- === TAMBAHAN: Data Pelanggan & Nomor Meja === -->
+    <div class="info-meja">
+      <label for="namaPelanggan">Nama Pelanggan:</label>
+      <input
+        type="text"
+        id="namaPelanggan"
+        placeholder="Contoh: Budi Santoso"
+        maxlength="50"
+      >
+
+      <label for="nomorMeja">Nomor Meja:</label>
+      <input
+        type="number"
+        id="nomorMeja"
+        min="1"
+        step="1"
+        placeholder="Contoh: 5"
+      >
+    </div>
+
     <h2>Daftar Menu</h2>
 
     <table>
@@ -238,12 +308,26 @@
       </tbody>
     </table>
 
-    <p class="total">
-      Total Bayar: <span id="totalBayar">Rp 0</span>
-    </p>
+    <div class="ringkasan">
+      <p><strong>Subtotal:</strong> <span id="subtotalBayar">Rp 0</span></p>
+      <p><strong>Diskon:</strong> <span id="diskonInfo">Rp 0 (0%)</span></p>
+      <p class="total-akhir">
+        Total Bayar: <span id="totalBayar">Rp 0</span>
+      </p>
+    </div>
 
     <div class="pembayaran">
       <h2>Pembayaran Tunai</h2>
+
+      <label for="pilihanDiskon">Pilih Diskon:</label>
+      <select id="pilihanDiskon" onchange="tampilkanKeranjang()">
+        <option value="0">Tanpa Diskon</option>
+        <option value="5">Diskon 5%</option>
+        <option value="10">Diskon 10%</option>
+        <option value="15">Diskon 15%</option>
+        <option value="20">Diskon 20%</option>
+        <option value="auto">Diskon Otomatis (≥ Rp 100.000 = 10%)</option>
+      </select>
 
       <label for="uangBayar">Masukkan uang pembayaran (Rp):</label>
       <input
@@ -270,6 +354,9 @@
     <div id="struk" class="struk" hidden>
       <h2>STRUK PESANAN</h2>
       <p id="tanggalStruk"></p>
+      <!-- === TAMBAHAN: Nama pelanggan di struk === -->
+      <p><strong>Nama Pelanggan:</strong> <span id="strukPelanggan"></span></p>
+      <p><strong>Nomor Meja:</strong> <span id="strukMeja"></span></p>
 
       <table>
         <thead>
@@ -282,6 +369,8 @@
         <tbody id="isiStruk"></tbody>
       </table>
 
+      <p><strong>Subtotal:</strong> <span id="strukSubtotal"></span></p>
+      <p><strong>Diskon:</strong> <span id="strukDiskon"></span></p>
       <p><strong>Total Bayar:</strong> <span id="strukTotal"></span></p>
       <p><strong>Uang Bayar:</strong> <span id="strukBayar"></span></p>
       <p><strong>Kembalian:</strong> <span id="strukKembalian"></span></p>
@@ -420,12 +509,36 @@
       );
     }
 
+    // Menghitung subtotal (sebelum diskon)
+    function hitungSubtotal() {
+      let subtotal = 0;
+      for (const kode in keranjang) {
+        subtotal += keranjang[kode].harga * keranjang[kode].jumlah;
+      }
+      return subtotal;
+    }
+
+    // Menghitung nilai diskon
+    function hitungDiskon(subtotal) {
+      const pilihan = document.getElementById("pilihanDiskon").value;
+
+      let persen = 0;
+      if (pilihan === "auto") {
+        persen = subtotal >= 100000 ? 10 : 0;
+      } else {
+        persen = Number(pilihan);
+      }
+
+      const nilaiDiskon = Math.round(subtotal * persen / 100);
+      return { persen: persen, nilai: nilaiDiskon };
+    }
+
     // Menampilkan isi keranjang dan total
     function tampilkanKeranjang() {
       const tbody = document.getElementById("daftarKeranjang");
       tbody.innerHTML = "";
 
-      let total = 0;
+      let subtotal = 0;
       let nomor = 1;
       let adaPesanan = false;
 
@@ -435,8 +548,8 @@
         if (item.jumlah <= 0) continue;
 
         adaPesanan = true;
-        const subtotal = item.harga * item.jumlah;
-        total += subtotal;
+        const sub = item.harga * item.jumlah;
+        subtotal += sub;
 
         const tr = document.createElement("tr");
 
@@ -445,7 +558,7 @@
           item.nama,
           rupiah(item.harga),
           item.jumlah,
-          rupiah(subtotal)
+          rupiah(sub)
         ];
 
         nilai.forEach(function(nilaiTeks) {
@@ -476,8 +589,13 @@
         tbody.appendChild(tr);
       }
 
-      document.getElementById("totalBayar").textContent =
-        rupiah(total);
+      const diskon = hitungDiskon(subtotal);
+      const totalAkhir = subtotal - diskon.nilai;
+
+      document.getElementById("subtotalBayar").textContent = rupiah(subtotal);
+      document.getElementById("diskonInfo").textContent =
+        rupiah(diskon.nilai) + " (" + diskon.persen + "%)";
+      document.getElementById("totalBayar").textContent = rupiah(totalAkhir);
     }
 
     // Menghapus satu jenis menu dari keranjang
@@ -498,15 +616,11 @@
       tampilkanPesan("Menu berhasil dihapus dari keranjang.", false);
     }
 
-    // Menghitung total belanja
+    // Menghitung total belanja (setelah diskon)
     function hitungTotal() {
-      let total = 0;
-
-      for (const kode in keranjang) {
-        total += keranjang[kode].harga * keranjang[kode].jumlah;
-      }
-
-      return total;
+      const subtotal = hitungSubtotal();
+      const diskon = hitungDiskon(subtotal);
+      return subtotal - diskon.nilai;
     }
 
     // Validasi pembayaran dan membuat struk
@@ -523,6 +637,43 @@
         tampilkanPesan("Keranjang masih kosong.", true);
         return;
       }
+
+      // === TAMBAHAN: Validasi nama pelanggan ===
+      const inputPelanggan = document.getElementById("namaPelanggan");
+      const namaPelanggan = inputPelanggan.value.trim();
+
+      if (namaPelanggan === "") {
+        tampilkanPesan(
+          "Nama pelanggan wajib diisi.",
+          true
+        );
+        inputPelanggan.focus();
+        return;
+      }
+
+      if (namaPelanggan.length > 50) {
+        tampilkanPesan(
+          "Nama pelanggan maksimal 50 karakter.",
+          true
+        );
+        inputPelanggan.focus();
+        return;
+      }
+
+      // Validasi nomor meja
+      const inputMeja = document.getElementById("nomorMeja");
+      const nilaiMeja = inputMeja.value.trim();
+
+      if (nilaiMeja === "" || !/^\d+$/.test(nilaiMeja) || Number(nilaiMeja) <= 0) {
+        tampilkanPesan(
+          "Masukkan nomor meja yang valid (angka bulat lebih dari 0).",
+          true
+        );
+        inputMeja.focus();
+        return;
+      }
+
+      const nomorMeja = Number(nilaiMeja);
 
       const inputBayar = document.getElementById("uangBayar");
       const nilaiBayar = inputBayar.value;
@@ -541,7 +692,10 @@
       }
 
       const bayar = Number(nilaiBayar);
-      const total = hitungTotal();
+
+      const subtotal = hitungSubtotal();
+      const diskon = hitungDiskon(subtotal);
+      const total = subtotal - diskon.nilai;
 
       if (bayar < total) {
         tampilkanPesan(
@@ -577,6 +731,17 @@
       document.getElementById("tanggalStruk").textContent =
         "Tanggal: " + new Date().toLocaleString("id-ID");
 
+      // === TAMBAHAN: Isi nama pelanggan di struk ===
+      document.getElementById("strukPelanggan").textContent = namaPelanggan;
+
+      document.getElementById("strukMeja").textContent = nomorMeja;
+
+      document.getElementById("strukSubtotal").textContent =
+        rupiah(subtotal);
+
+      document.getElementById("strukDiskon").textContent =
+        rupiah(diskon.nilai) + " (" + diskon.persen + "%)";
+
       document.getElementById("strukTotal").textContent =
         rupiah(total);
 
@@ -591,7 +756,6 @@
       transaksiSelesai = true;
       tampilkanPesan("Pembayaran berhasil!", false);
 
-      // Cetak otomatis setelah struk selesai dibuat
       window.print();
     }
 
@@ -604,6 +768,9 @@
       transaksiSelesai = false;
 
       document.getElementById("uangBayar").value = "";
+      document.getElementById("nomorMeja").value = "";
+      document.getElementById("namaPelanggan").value = "";   // === TAMBAHAN: NAMA PELANGGAN ===
+      document.getElementById("pilihanDiskon").value = "0";
       document.getElementById("struk").hidden = true;
 
       tampilkanKeranjang();
