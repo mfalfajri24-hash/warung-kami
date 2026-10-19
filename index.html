@@ -1,791 +1,864 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-  <base target="_top">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Restoran Padang - Pemesanan Online</title>
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+    }
 
-  <title>Sistem Order Makanan</title>
-
-  <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f3f4f6;
-      margin: 0;
-      padding: 20px;
-      color: #333;
+        background: linear-gradient(135deg, #fdf6ec 0%, #f5e6d3 100%);
+        min-height: 100vh;
+        padding: 20px;
+        color: #333;
     }
 
     .container {
-      max-width: 900px;
-      margin: auto;
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+        max-width: 900px;
+        margin: 0 auto;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(139, 69, 19, 0.15);
+        overflow: hidden;
     }
 
-    h1, h2 {
-      text-align: center;
-      color: #166534;
+    header {
+        background: linear-gradient(135deg, #8b4513, #d2691e);
+        color: #fff;
+        padding: 24px;
+        text-align: center;
     }
 
-    .subjudul {
-      text-align: center;
-      margin-bottom: 25px;
-      color: #666;
+    header h1 {
+        font-size: 1.6rem;
+        margin-bottom: 4px;
     }
 
+    header p {
+        font-size: 0.9rem;
+        opacity: 0.9;
+    }
+
+    /* Form identitas */
+    #identitas-section {
+        padding: 30px;
+    }
+
+    #identitas-section h2 {
+        color: #8b4513;
+        margin-bottom: 16px;
+        font-size: 1.2rem;
+    }
+
+    .form-group {
+        margin-bottom: 14px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: #5a3a1a;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 10px 14px;
+        border: 2px solid #e0d0c0;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.2s;
+    }
+
+    .form-group input:focus {
+        outline: none;
+        border-color: #d2691e;
+    }
+
+    /* Tombol umum */
+    .btn {
+        background: #d2691e;
+        color: #fff;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn:hover { background: #b3551a; }
+    .btn:active { transform: scale(0.98); }
+    .btn-block { width: 100%; }
+
+    .btn-secondary { background: #6c757d; }
+    .btn-secondary:hover { background: #5a6268; }
+
+    .btn-danger { background: #dc3545; }
+    .btn-danger:hover { background: #b02a37; }
+
+    .btn-success { background: #28a745; }
+    .btn-success:hover { background: #1e7e34; }
+
+    .btn-small {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+    }
+
+    /* Layout utama */
+    #app-section { display: none; }
+
+    .user-info {
+        background: #fff8f0;
+        padding: 16px 24px;
+        border-bottom: 1px solid #f0e0d0;
+        font-size: 0.95rem;
+        color: #5a3a1a;
+    }
+
+    .user-info strong { color: #8b4513; }
+
+    /* Menu utama */
+    .main-menu {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 10px;
+        padding: 20px;
+        background: #faf5ef;
+        border-bottom: 1px solid #f0e0d0;
+    }
+
+    .main-menu button {
+        background: #fff;
+        border: 2px solid #e0d0c0;
+        color: #5a3a1a;
+        padding: 12px;
+        border-radius: 10px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: left;
+    }
+
+    .main-menu button:hover {
+        background: #d2691e;
+        color: #fff;
+        border-color: #d2691e;
+    }
+
+    .main-menu button.keluar {
+        border-color: #dc3545;
+        color: #dc3545;
+    }
+
+    .main-menu button.keluar:hover {
+        background: #dc3545;
+        color: #fff;
+    }
+
+    /* Konten */
+    .content {
+        padding: 24px;
+    }
+
+    .content h2 {
+        color: #8b4513;
+        margin-bottom: 16px;
+        font-size: 1.3rem;
+        border-bottom: 2px solid #f0e0d0;
+        padding-bottom: 8px;
+    }
+
+    /* Tabel menu & keranjang */
     table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 15px 0 25px;
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 16px;
+        font-size: 0.9rem;
+    }
+
+    thead {
+        background: #8b4513;
+        color: #fff;
     }
 
     th, td {
-      border: 1px solid #ddd;
-      padding: 12px;
-      text-align: center;
+        padding: 10px 12px;
+        text-align: left;
+        border-bottom: 1px solid #f0e0d0;
     }
 
-    th {
-      background: #166534;
-      color: white;
+    th.num, td.num { text-align: right; }
+    th.center, td.center { text-align: center; }
+
+    tbody tr:hover { background: #fdf6ec; }
+
+    .total-row {
+        font-weight: 700;
+        font-size: 1rem;
+        color: #8b4513;
+        background: #fff8f0;
     }
 
-    tr:nth-child(even) {
-      background: #f9fafb;
+    /* Pesan kosong */
+    .empty-msg {
+        text-align: center;
+        padding: 40px 20px;
+        color: #999;
+        font-style: italic;
     }
 
-    input {
-      padding: 9px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      box-sizing: border-box;
+    /* Input jumlah */
+    .qty-input {
+        width: 70px;
+        padding: 6px 8px;
+        border: 2px solid #e0d0c0;
+        border-radius: 6px;
+        text-align: center;
+        font-size: 0.9rem;
     }
 
-    input[type="number"] {
-      width: 75px;
+    .qty-input:focus {
+        outline: none;
+        border-color: #d2691e;
     }
 
-    .btn {
-      border: none;
-      padding: 10px 14px;
-      border-radius: 5px;
-      cursor: pointer;
-      color: white;
-      font-weight: bold;
+    /* Notifikasi */
+    #notif {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 14px 20px;
+        border-radius: 10px;
+        color: #fff;
+        font-weight: 600;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        transform: translateX(400px);
+        transition: transform 0.3s ease;
+        z-index: 1000;
+        max-width: 350px;
     }
 
-    .btn-tambah {
-      background: #16a34a;
+    #notif.show { transform: translateX(0); }
+    #notif.success { background: #28a745; }
+    #notif.error { background: #dc3545; }
+    #notif.info { background: #17a2b8; }
+
+    /* Info diskon */
+    .diskon-box {
+        background: #fff3cd;
+        border-left: 4px solid #ffc107;
+        padding: 12px 16px;
+        border-radius: 8px;
+        margin: 12px 0;
+        color: #856404;
+        font-size: 0.9rem;
     }
 
-    .btn-bayar {
-      background: #2563eb;
-    }
-
-    .btn-reset {
-      background: #dc2626;
-    }
-
-    .btn:hover {
-      opacity: 0.85;
-    }
-
-    .pembayaran {
-      background: #f0fdf4;
-      padding: 18px;
-      border-radius: 8px;
-      margin-top: 20px;
-    }
-
-    .pembayaran input,
-    .pembayaran select {
-      width: 100%;
-      margin: 8px 0 12px;
-      padding: 9px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      box-sizing: border-box;
-    }
-
-    .total {
-      font-size: 20px;
-      font-weight: bold;
-      color: #166534;
-    }
-
-    .pesan {
-      margin: 12px 0;
-      font-weight: bold;
-    }
-
-    .sukses {
-      color: #15803d;
-    }
-
-    .error {
-      color: #dc2626;
-    }
-
+    /* Struk pembayaran */
     .struk {
-      border: 2px dashed #999;
-      padding: 18px;
-      margin-top: 25px;
-      background: #fff;
+        background: #f8f9fa;
+        border: 2px dashed #d2691e;
+        border-radius: 12px;
+        padding: 20px;
+        margin-top: 16px;
+        font-family: 'Courier New', monospace;
     }
 
-    .struk h2 {
-      color: #333;
+    .struk h3 {
+        text-align: center;
+        color: #8b4513;
+        margin-bottom: 12px;
+        font-size: 1.1rem;
     }
 
-    .struk table th {
-      background: #555;
+    .struk-line {
+        display: flex;
+        justify-content: space-between;
+        padding: 4px 0;
+        font-size: 0.9rem;
     }
 
-    .struk table td,
-    .struk table th {
-      padding: 8px;
+    .struk-line.bold {
+        font-weight: 700;
+        border-top: 1px dashed #999;
+        margin-top: 8px;
+        padding-top: 8px;
     }
 
-    .aksi {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
+    .struk-line.highlight {
+        color: #8b4513;
+        font-size: 1rem;
     }
 
-    .info-meja {
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
-      padding: 15px;
-      border-radius: 8px;
-      margin-bottom: 20px;
+    /* Kartu riwayat */
+    .riwayat-card {
+        background: #faf5ef;
+        border-left: 4px solid #d2691e;
+        border-radius: 8px;
+        padding: 16px 20px;
+        margin-bottom: 16px;
     }
 
-    .info-meja label {
-      font-weight: bold;
-      display: block;
-      margin-bottom: 6px;
+    .riwayat-card h3 {
+        color: #8b4513;
+        font-size: 1rem;
+        margin-bottom: 8px;
     }
 
-    .info-meja input,
-    .info-meja select {
-      width: 100%;
-      margin-bottom: 10px;
-      padding: 9px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      box-sizing: border-box;
+    .riwayat-card .detail {
+        font-size: 0.88rem;
+        color: #666;
+        line-height: 1.6;
     }
 
-    .ringkasan {
-      background: #fefce8;
-      border: 1px solid #fde047;
-      padding: 15px;
-      border-radius: 8px;
-      margin-top: 15px;
-    }
+    .riwayat-card .detail strong { color: #5a3a1a; }
 
-    .ringkasan p {
-      margin: 6px 0;
-    }
-
-    .ringkasan .total-akhir {
-      font-size: 20px;
-      font-weight: bold;
-      color: #166534;
-      border-top: 2px solid #166534;
-      padding-top: 8px;
-      margin-top: 10px;
-    }
-
+    /* Responsive */
     @media (max-width: 600px) {
-      body {
-        padding: 8px;
-      }
-
-      .container {
-        padding: 12px;
-      }
-
-      th, td {
-        padding: 7px 4px;
-        font-size: 12px;
-      }
-
-      h1 {
-        font-size: 23px;
-      }
+        body { padding: 10px; }
+        header h1 { font-size: 1.2rem; }
+        .main-menu { grid-template-columns: 1fr 1fr; }
+        table { font-size: 0.82rem; }
+        th, td { padding: 8px 6px; }
     }
 
-    @media print {
-      body * {
-        visibility: hidden;
-      }
-
-      #struk, #struk * {
-        visibility: visible;
-      }
-
-      #struk {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        box-sizing: border-box;
-        border: none;
-      }
-
-      .struk table th {
-        color: black;
-        background: white;
-      }
-    }
-  </style>
+    /* Section hidden */
+    .hidden { display: none; }
+</style>
 </head>
-
 <body>
-  <div class="container">
 
-    <h1>🍽️ Sistem Order Makanan</h1>
-    <p class="subjudul">
-      Selamat datang di restoran kami!
-    </p>
+<div class="container">
+    <header>
+        <h1>🍛 Restoran Padang</h1>
+        <p>Sistem Pemesanan Online</p>
+    </header>
+
+    <!-- Identitas Pelanggan -->
+    <section id="identitas-section">
+        <h2>Form Identitas Pelanggan</h2>
+        <div class="form-group">
+            <label for="input-nama">Nama Pelanggan</label>
+            <input type="text" id="input-nama" placeholder="Masukkan nama Anda">
+        </div>
+        <div class="form-group">
+            <label for="input-meja">Nomor Meja</label>
+            <input type="text" id="input-meja" placeholder="Contoh: 5">
+        </div>
+        <button class="btn btn-block" onclick="mulaiAplikasi()">Mulai Pemesanan →</button>
+    </section>
+
+    <!-- Aplikasi Utama -->
+    <section id="app-section">
+        <div class="user-info">
+            👤 <strong id="info-nama">-</strong> &nbsp;|&nbsp; 🪑 Meja <strong id="info-meja">-</strong>
+        </div>
+
+        <!-- Menu Utama -->
+        <nav class="main-menu">
+            <button onclick="tampilkanMenu()">1. Tampilkan Menu</button>
+            <button onclick="tampilkanTambahPesanan()">2. Tambah Pesanan</button>
+            <button onclick="tampilkanKeranjang()">3. Lihat Keranjang</button>
+            <button onclick="tampilkanUbahJumlah()">4. Ubah Jumlah Pesanan</button>
+            <button onclick="tampilkanHapusItem()">5. Hapus Menu dari Keranjang</button>
+            <button onclick="tampilkanCheckout()">6. Checkout & Bayar</button>
+            <button onclick="tampilkanRiwayat()">7. Lihat Riwayat Pesanan</button>
+            <button class="keluar" onclick="keluar()">0. Keluar</button>
+        </nav>
+
+        <!-- Konten Dinamis -->
+        <div class="content" id="konten"></div>
+    </section>
+</div>
+
+<!-- Notifikasi -->
+<div id="notif"></div>
+
+<script>
+/* =====================================================
+   DATA GLOBAL
+   ===================================================== */
+const menu = {
+    1:  { nama: "Nasi Rendang Nampol",    harga: 25000 },
+    2:  { nama: "Nasi Ayam Pop",          harga: 22000 },
+    3:  { nama: "Nasi Patin Sambel",      harga: 20000 },
+    4:  { nama: "Nasi Dendeng Balado",    harga: 28000 },
+    5:  { nama: "Nasi Bakar Ayam",        harga: 23000 },
+    6:  { nama: "Perkedel",               harga: 5000  },
+    7:  { nama: "Sayur Daun Singkong",    harga: 8000  },
+    8:  { nama: "Es Teh Manis",           harga: 6000  },
+    9:  { nama: "Teh Talua",              harga: 12000 },
+    10: { nama: "Es Jeruk Hangat",        harga: 8000  },
+};
+
+let keranjang = [];
+let riwayatPesanan = [];
+let namaPelanggan = "";
+let nomorMeja = "";
+
+/* =====================================================
+   UTILITAS
+   ===================================================== */
+function rupiah(angka) {
+    return "Rp " + angka.toLocaleString("id-ID");
+}
+
+function notif(pesan, tipe = "info") {
+    const el = document.getElementById("notif");
+    el.textContent = pesan;
+    el.className = tipe + " show";
+    clearTimeout(el._timer);
+    el._timer = setTimeout(() => {
+        el.classList.remove("show");
+    }, 2500);
+}
+
+function escHtml(str) {
+    return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+}
+
+/* =====================================================
+   MULAI APLIKASI
+   ===================================================== */
+function mulaiAplikasi() {
+    const nama = document.getElementById("input-nama").value.trim();
+    const meja = document.getElementById("input-meja").value.trim();
+
+    if (!nama) { notif("Nama pelanggan tidak boleh kosong!", "error"); return; }
+    if (!meja) { notif("Nomor meja tidak boleh kosong!", "error"); return; }
 
-    <!-- === TAMBAHAN: Data Pelanggan & Nomor Meja === -->
-    <div class="info-meja">
-      <label for="namaPelanggan">Nama Pelanggan:</label>
-      <input
-        type="text"
-        id="namaPelanggan"
-        placeholder="Contoh: Budi Santoso"
-        maxlength="50"
-      >
+    namaPelanggan = nama;
+    nomorMeja = meja;
 
-      <label for="nomorMeja">Nomor Meja:</label>
-      <input
-        type="number"
-        id="nomorMeja"
-        min="1"
-        step="1"
-        placeholder="Contoh: 5"
-      >
-    </div>
+    document.getElementById("info-nama").textContent = namaPelanggan;
+    document.getElementById("info-meja").textContent = nomorMeja;
 
-    <h2>Daftar Menu</h2>
+    document.getElementById("identitas-section").style.display = "none";
+    document.getElementById("app-section").style.display = "block";
 
-    <table>
-      <thead>
-        <tr>
-          <th>Kode</th>
-          <th>Nama Menu</th>
-          <th>Harga</th>
-          <th>Jumlah</th>
-          <th>Aksi</th>
-        </tr>
-      </thead>
-      <tbody id="daftarMenu"></tbody>
-    </table>
-
-    <h2>Keranjang Pesanan</h2>
-
-    <table>
-      <thead>
-        <tr>
-          <th>No.</th>
-          <th>Nama Menu</th>
-          <th>Harga Satuan</th>
-          <th>Jumlah</th>
-          <th>Subtotal</th>
-          <th>Aksi</th>
-        </tr>
-      </thead>
-      <tbody id="daftarKeranjang">
-        <tr>
-          <td colspan="6">Belum ada pesanan.</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="ringkasan">
-      <p><strong>Subtotal:</strong> <span id="subtotalBayar">Rp 0</span></p>
-      <p><strong>Diskon:</strong> <span id="diskonInfo">Rp 0 (0%)</span></p>
-      <p class="total-akhir">
-        Total Bayar: <span id="totalBayar">Rp 0</span>
-      </p>
-    </div>
-
-    <div class="pembayaran">
-      <h2>Pembayaran Tunai</h2>
-
-      <label for="pilihanDiskon">Pilih Diskon:</label>
-      <select id="pilihanDiskon" onchange="tampilkanKeranjang()">
-        <option value="0">Tanpa Diskon</option>
-        <option value="5">Diskon 5%</option>
-        <option value="10">Diskon 10%</option>
-        <option value="15">Diskon 15%</option>
-        <option value="20">Diskon 20%</option>
-        <option value="auto">Diskon Otomatis (≥ Rp 100.000 = 10%)</option>
-      </select>
-
-      <label for="uangBayar">Masukkan uang pembayaran (Rp):</label>
-      <input
-        type="number"
-        id="uangBayar"
-        min="0"
-        step="1"
-        placeholder="Contoh: 50000"
-      >
-
-      <div class="aksi">
-        <button class="btn btn-bayar" onclick="prosesPembayaran()">
-          Bayar & Cetak Struk
-        </button>
-
-        <button class="btn btn-reset" onclick="resetPesanan()">
-          Reset Pesanan
-        </button>
-      </div>
-
-      <p id="pesan" class="pesan"></p>
-    </div>
-
-    <div id="struk" class="struk" hidden>
-      <h2>STRUK PESANAN</h2>
-      <p id="tanggalStruk"></p>
-      <!-- === TAMBAHAN: Nama pelanggan di struk === -->
-      <p><strong>Nama Pelanggan:</strong> <span id="strukPelanggan"></span></p>
-      <p><strong>Nomor Meja:</strong> <span id="strukMeja"></span></p>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Nama Menu</th>
-            <th>Jumlah</th>
-            <th>Subtotal</th>
-          </tr>
-        </thead>
-        <tbody id="isiStruk"></tbody>
-      </table>
-
-      <p><strong>Subtotal:</strong> <span id="strukSubtotal"></span></p>
-      <p><strong>Diskon:</strong> <span id="strukDiskon"></span></p>
-      <p><strong>Total Bayar:</strong> <span id="strukTotal"></span></p>
-      <p><strong>Uang Bayar:</strong> <span id="strukBayar"></span></p>
-      <p><strong>Kembalian:</strong> <span id="strukKembalian"></span></p>
-
-      <h3 style="text-align:center">
-        Terima kasih sudah memesan!
-      </h3>
-
-      <button
-        class="btn btn-bayar"
-        onclick="window.print()"
-      >
-        Cetak Struk
-      </button>
-    </div>
-
-  </div>
-
-  <script>
-    // Daftar menu restoran
-    const menu = {
-      "1": { nama: "Nasi Goreng", harga: 15000 },
-      "2": { nama: "Mie Goreng", harga: 12000 },
-      "3": { nama: "Ayam Penyet", harga: 18000 },
-      "4": { nama: "Es Teh", harga: 4000 },
-      "5": { nama: "Es Jeruk", harga: 5000 }
-    };
-
-    // Keranjang menyimpan jumlah setiap kode menu
-    const keranjang = {};
-
-    let transaksiSelesai = false;
-
-    // Format rupiah
-    function rupiah(angka) {
-      return "Rp " + angka.toLocaleString("id-ID");
-    }
-
-    // Menampilkan daftar menu
-    function tampilkanMenu() {
-      const tbody = document.getElementById("daftarMenu");
-      tbody.innerHTML = "";
-
-      for (const kode in menu) {
-        const item = menu[kode];
-        const tr = document.createElement("tr");
-
-        const tdKode = document.createElement("td");
-        tdKode.textContent = kode;
-
-        const tdNama = document.createElement("td");
-        tdNama.textContent = item.nama;
-
-        const tdHarga = document.createElement("td");
-        tdHarga.textContent = rupiah(item.harga);
-
-        const tdJumlah = document.createElement("td");
-        const input = document.createElement("input");
-        input.type = "number";
-        input.min = "1";
-        input.step = "1";
-        input.value = "1";
-        input.id = "jumlah-" + kode;
-        input.setAttribute("aria-label", "Jumlah " + item.nama);
-        tdJumlah.appendChild(input);
-
-        const tdAksi = document.createElement("td");
-        const tombol = document.createElement("button");
-        tombol.className = "btn btn-tambah";
-        tombol.textContent = "Tambah";
-        tombol.onclick = function() {
-          tambahPesanan(kode);
-        };
-        tdAksi.appendChild(tombol);
-
-        tr.append(tdKode, tdNama, tdHarga, tdJumlah, tdAksi);
-        tbody.appendChild(tr);
-      }
-    }
-
-    // Menambahkan menu ke keranjang
-    function tambahPesanan(kode) {
-      if (transaksiSelesai) {
-        tampilkanPesan(
-          "Transaksi sudah selesai. Reset untuk memulai pesanan baru.",
-          true
-        );
-        return;
-      }
-
-      const input = document.getElementById("jumlah-" + kode);
-      const jumlah = Number(input.value);
-
-      if (!Number.isSafeInteger(jumlah) || jumlah <= 0) {
-        tampilkanPesan(
-          "Jumlah harus berupa bilangan bulat lebih dari 0.",
-          true
-        );
-        input.focus();
-        return;
-      }
-
-      if (!menu[kode]) {
-        tampilkanPesan("Menu tidak tersedia.", true);
-        return;
-      }
-
-      const jumlahLama = keranjang[kode]
-        ? keranjang[kode].jumlah
-        : 0;
-
-      if (!Number.isSafeInteger(jumlahLama + jumlah)) {
-        tampilkanPesan("Jumlah pesanan terlalu besar.", true);
-        return;
-      }
-
-      if (!keranjang[kode]) {
-        keranjang[kode] = {
-          nama: menu[kode].nama,
-          harga: menu[kode].harga,
-          jumlah: 0
-        };
-      }
-
-      keranjang[kode].jumlah += jumlah;
-
-      input.value = "1";
-      document.getElementById("struk").hidden = true;
-
-      tampilkanKeranjang();
-
-      tampilkanPesan(
-        "Berhasil menambahkan " + jumlah + " " +
-        menu[kode].nama + " ke pesanan.",
-        false
-      );
-    }
-
-    // Menghitung subtotal (sebelum diskon)
-    function hitungSubtotal() {
-      let subtotal = 0;
-      for (const kode in keranjang) {
-        subtotal += keranjang[kode].harga * keranjang[kode].jumlah;
-      }
-      return subtotal;
-    }
-
-    // Menghitung nilai diskon
-    function hitungDiskon(subtotal) {
-      const pilihan = document.getElementById("pilihanDiskon").value;
-
-      let persen = 0;
-      if (pilihan === "auto") {
-        persen = subtotal >= 100000 ? 10 : 0;
-      } else {
-        persen = Number(pilihan);
-      }
-
-      const nilaiDiskon = Math.round(subtotal * persen / 100);
-      return { persen: persen, nilai: nilaiDiskon };
-    }
-
-    // Menampilkan isi keranjang dan total
-    function tampilkanKeranjang() {
-      const tbody = document.getElementById("daftarKeranjang");
-      tbody.innerHTML = "";
-
-      let subtotal = 0;
-      let nomor = 1;
-      let adaPesanan = false;
-
-      for (const kode in keranjang) {
-        const item = keranjang[kode];
-
-        if (item.jumlah <= 0) continue;
-
-        adaPesanan = true;
-        const sub = item.harga * item.jumlah;
-        subtotal += sub;
-
-        const tr = document.createElement("tr");
-
-        const nilai = [
-          nomor++,
-          item.nama,
-          rupiah(item.harga),
-          item.jumlah,
-          rupiah(sub)
-        ];
-
-        nilai.forEach(function(nilaiTeks) {
-          const td = document.createElement("td");
-          td.textContent = nilaiTeks;
-          tr.appendChild(td);
-        });
-
-        const tdAksi = document.createElement("td");
-        const tombol = document.createElement("button");
-        tombol.className = "btn btn-reset";
-        tombol.textContent = "Hapus";
-        tombol.onclick = function() {
-          hapusPesanan(kode);
-        };
-
-        tdAksi.appendChild(tombol);
-        tr.appendChild(tdAksi);
-        tbody.appendChild(tr);
-      }
-
-      if (!adaPesanan) {
-        const tr = document.createElement("tr");
-        const td = document.createElement("td");
-        td.colSpan = 6;
-        td.textContent = "Belum ada pesanan.";
-        tr.appendChild(td);
-        tbody.appendChild(tr);
-      }
-
-      const diskon = hitungDiskon(subtotal);
-      const totalAkhir = subtotal - diskon.nilai;
-
-      document.getElementById("subtotalBayar").textContent = rupiah(subtotal);
-      document.getElementById("diskonInfo").textContent =
-        rupiah(diskon.nilai) + " (" + diskon.persen + "%)";
-      document.getElementById("totalBayar").textContent = rupiah(totalAkhir);
-    }
-
-    // Menghapus satu jenis menu dari keranjang
-    function hapusPesanan(kode) {
-      if (transaksiSelesai) {
-        tampilkanPesan(
-          "Transaksi selesai. Reset untuk memulai pesanan baru.",
-          true
-        );
-        return;
-      }
-
-      delete keranjang[kode];
-
-      document.getElementById("struk").hidden = true;
-
-      tampilkanKeranjang();
-      tampilkanPesan("Menu berhasil dihapus dari keranjang.", false);
-    }
-
-    // Menghitung total belanja (setelah diskon)
-    function hitungTotal() {
-      const subtotal = hitungSubtotal();
-      const diskon = hitungDiskon(subtotal);
-      return subtotal - diskon.nilai;
-    }
-
-    // Validasi pembayaran dan membuat struk
-    function prosesPembayaran() {
-      if (transaksiSelesai) {
-        tampilkanPesan(
-          "Transaksi sudah selesai. Reset untuk memulai transaksi baru.",
-          true
-        );
-        return;
-      }
-
-      if (Object.keys(keranjang).length === 0) {
-        tampilkanPesan("Keranjang masih kosong.", true);
-        return;
-      }
-
-      // === TAMBAHAN: Validasi nama pelanggan ===
-      const inputPelanggan = document.getElementById("namaPelanggan");
-      const namaPelanggan = inputPelanggan.value.trim();
-
-      if (namaPelanggan === "") {
-        tampilkanPesan(
-          "Nama pelanggan wajib diisi.",
-          true
-        );
-        inputPelanggan.focus();
-        return;
-      }
-
-      if (namaPelanggan.length > 50) {
-        tampilkanPesan(
-          "Nama pelanggan maksimal 50 karakter.",
-          true
-        );
-        inputPelanggan.focus();
-        return;
-      }
-
-      // Validasi nomor meja
-      const inputMeja = document.getElementById("nomorMeja");
-      const nilaiMeja = inputMeja.value.trim();
-
-      if (nilaiMeja === "" || !/^\d+$/.test(nilaiMeja) || Number(nilaiMeja) <= 0) {
-        tampilkanPesan(
-          "Masukkan nomor meja yang valid (angka bulat lebih dari 0).",
-          true
-        );
-        inputMeja.focus();
-        return;
-      }
-
-      const nomorMeja = Number(nilaiMeja);
-
-      const inputBayar = document.getElementById("uangBayar");
-      const nilaiBayar = inputBayar.value;
-
-      if (
-        nilaiBayar.trim() === "" ||
-        !/^\d+$/.test(nilaiBayar) ||
-        !Number.isSafeInteger(Number(nilaiBayar))
-      ) {
-        tampilkanPesan(
-          "Masukkan nominal pembayaran berupa angka bulat yang valid.",
-          true
-        );
-        inputBayar.focus();
-        return;
-      }
-
-      const bayar = Number(nilaiBayar);
-
-      const subtotal = hitungSubtotal();
-      const diskon = hitungDiskon(subtotal);
-      const total = subtotal - diskon.nilai;
-
-      if (bayar < total) {
-        tampilkanPesan(
-          "Uang Anda kurang! Total pembayaran " + rupiah(total) + ".",
-          true
-        );
-        return;
-      }
-
-      const kembalian = bayar - total;
-
-      // Membuat rincian struk
-      const tbody = document.getElementById("isiStruk");
-      tbody.innerHTML = "";
-
-      for (const kode in keranjang) {
-        const item = keranjang[kode];
-        const tr = document.createElement("tr");
-
-        [
-          item.nama,
-          item.jumlah,
-          rupiah(item.harga * item.jumlah)
-        ].forEach(function(teks) {
-          const td = document.createElement("td");
-          td.textContent = teks;
-          tr.appendChild(td);
-        });
-
-        tbody.appendChild(tr);
-      }
-
-      document.getElementById("tanggalStruk").textContent =
-        "Tanggal: " + new Date().toLocaleString("id-ID");
-
-      // === TAMBAHAN: Isi nama pelanggan di struk ===
-      document.getElementById("strukPelanggan").textContent = namaPelanggan;
-
-      document.getElementById("strukMeja").textContent = nomorMeja;
-
-      document.getElementById("strukSubtotal").textContent =
-        rupiah(subtotal);
-
-      document.getElementById("strukDiskon").textContent =
-        rupiah(diskon.nilai) + " (" + diskon.persen + "%)";
-
-      document.getElementById("strukTotal").textContent =
-        rupiah(total);
-
-      document.getElementById("strukBayar").textContent =
-        rupiah(bayar);
-
-      document.getElementById("strukKembalian").textContent =
-        rupiah(kembalian);
-
-      document.getElementById("struk").hidden = false;
-
-      transaksiSelesai = true;
-      tampilkanPesan("Pembayaran berhasil!", false);
-
-      window.print();
-    }
-
-    // Mengosongkan keranjang untuk transaksi berikutnya
-    function resetPesanan() {
-      for (const kode in keranjang) {
-        delete keranjang[kode];
-      }
-
-      transaksiSelesai = false;
-
-      document.getElementById("uangBayar").value = "";
-      document.getElementById("nomorMeja").value = "";
-      document.getElementById("namaPelanggan").value = "";   // === TAMBAHAN: NAMA PELANGGAN ===
-      document.getElementById("pilihanDiskon").value = "0";
-      document.getElementById("struk").hidden = true;
-
-      tampilkanKeranjang();
-      tampilkanPesan("Pesanan telah direset.", false);
-    }
-
-    function tampilkanPesan(teks, error) {
-      const pesan = document.getElementById("pesan");
-      pesan.textContent = teks;
-      pesan.className = error ? "pesan error" : "pesan sukses";
-    }
-
-    // Jalankan saat halaman dibuka
     tampilkanMenu();
+    notif(`Selamat datang, ${namaPelanggan}!`, "success");
+}
+
+/* =====================================================
+   1. TAMPILKAN MENU
+   ===================================================== */
+function tampilkanMenu() {
+    let html = `<h2>📋 Daftar Menu</h2>
+    <table>
+        <thead>
+            <tr>
+                <th class="center">No</th>
+                <th>Nama Menu</th>
+                <th class="num">Harga</th>
+            </tr>
+        </thead>
+        <tbody>`;
+    for (const [id, item] of Object.entries(menu)) {
+        html += `<tr>
+            <td class="center">${id}</td>
+            <td>${escHtml(item.nama)}</td>
+            <td class="num">${rupiah(item.harga)}</td>
+        </tr>`;
+    }
+    html += `</tbody></table>`;
+    document.getElementById("konten").innerHTML = html;
+}
+
+/* =====================================================
+   2. TAMBAH PESANAN
+   ===================================================== */
+function tampilkanTambahPesanan() {
+    let opsi = "";
+    for (const [id, item] of Object.entries(menu)) {
+        opsi += `<option value="${id}">${id}. ${escHtml(item.nama)} - ${rupiah(item.harga)}</option>`;
+    }
+
+    const html = `
+    <h2>➕ Tambah Pesanan</h2>
+    <div class="form-group">
+        <label for="pilih-menu">Pilih Menu</label>
+        <select id="pilih-menu" style="width:100%;padding:10px 14px;border:2px solid #e0d0c0;border-radius:8px;font-size:1rem;">
+            ${opsi}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="input-jumlah">Jumlah Pesanan</label>
+        <input type="number" id="input-jumlah" min="1" value="1" style="width:100%;padding:10px 14px;border:2px solid #e0d0c0;border-radius:8px;font-size:1rem;">
+    </div>
+    <button class="btn" onclick="prosesTambahPesanan()">Tambah ke Keranjang</button>
+    `;
+    document.getElementById("konten").innerHTML = html;
+}
+
+function prosesTambahPesanan() {
+    const idMenu = parseInt(document.getElementById("pilih-menu").value);
+    const jumlah = parseInt(document.getElementById("input-jumlah").value);
+
+    if (!menu[idMenu]) { notif("Menu tidak ditemukan!", "error"); return; }
+    if (!jumlah || jumlah <= 0) { notif("Jumlah harus lebih dari 0!", "error"); return; }
+
+    // Cek apakah menu sudah ada di keranjang
+    const existing = keranjang.find(it => it.id === idMenu);
+    if (existing) {
+        existing.jumlah += jumlah;
+        notif(`${menu[idMenu].nama} berhasil ditambah. Total: ${existing.jumlah} porsi`, "success");
+    } else {
+        keranjang.push({
+            id: idMenu,
+            nama: menu[idMenu].nama,
+            harga: menu[idMenu].harga,
+            jumlah: jumlah
+        });
+        notif(`${menu[idMenu].nama} x${jumlah} ditambahkan ke keranjang.`, "success");
+    }
+
     tampilkanKeranjang();
-  </script>
+}
+
+/* =====================================================
+   3. LIHAT KERANJANG
+   ===================================================== */
+function tampilkanKeranjang() {
+    if (keranjang.length === 0) {
+        document.getElementById("konten").innerHTML =
+            `<h2>🛒 Keranjang</h2><div class="empty-msg">Keranjang masih kosong.</div>`;
+        return;
+    }
+
+    let html = `<h2>🛒 Isi Keranjang</h2>
+    <table>
+        <thead>
+            <tr>
+                <th class="center">No</th>
+                <th>Nama Menu</th>
+                <th class="num">Harga</th>
+                <th class="center">Jml</th>
+                <th class="num">Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>`;
+    let total = 0;
+    keranjang.forEach((item, idx) => {
+        const subtotal = item.harga * item.jumlah;
+        total += subtotal;
+        html += `<tr>
+            <td class="center">${idx + 1}</td>
+            <td>${escHtml(item.nama)}</td>
+            <td class="num">${rupiah(item.harga)}</td>
+            <td class="center">${item.jumlah}</td>
+            <td class="num">${rupiah(subtotal)}</td>
+        </tr>`;
+    });
+    html += `<tr class="total-row">
+        <td colspan="4">TOTAL</td>
+        <td class="num">${rupiah(total)}</td>
+    </tr>`;
+    html += `</tbody></table>`;
+
+    if (total >= 50000) {
+        html += `<div class="diskon-box">🎉 Total belanja Anda memenuhi syarat diskon 10% (hanya info, tidak mengurangi total bayar).</div>`;
+    }
+
+    document.getElementById("konten").innerHTML = html;
+}
+
+/* =====================================================
+   4. UBAH JUMLAH PESANAN
+   ===================================================== */
+function tampilkanUbahJumlah() {
+    if (keranjang.length === 0) {
+        document.getElementById("konten").innerHTML =
+            `<h2>✏️ Ubah Jumlah</h2><div class="empty-msg">Keranjang masih kosong.</div>`;
+        return;
+    }
+
+    let html = `<h2>✏️ Ubah Jumlah Pesanan</h2>
+    <table>
+        <thead>
+            <tr>
+                <th class="center">No</th>
+                <th>Nama Menu</th>
+                <th class="num">Harga</th>
+                <th class="center">Jumlah Baru</th>
+                <th class="center">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>`;
+    keranjang.forEach((item, idx) => {
+        html += `<tr>
+            <td class="center">${idx + 1}</td>
+            <td>${escHtml(item.nama)}</td>
+            <td class="num">${rupiah(item.harga)}</td>
+            <td class="center">
+                <input type="number" class="qty-input" id="qty-${idx}" min="1" value="${item.jumlah}">
+            </td>
+            <td class="center">
+                <button class="btn btn-small btn-success" onclick="simpanUbahJumlah(${idx})">Simpan</button>
+            </td>
+        </tr>`;
+    });
+    html += `</tbody></table>`;
+    document.getElementById("konten").innerHTML = html;
+}
+
+function simpanUbahJumlah(idx) {
+    const jumlahBaru = parseInt(document.getElementById(`qty-${idx}`).value);
+    if (!jumlahBaru || jumlahBaru <= 0) {
+        notif("Jumlah harus lebih dari 0!", "error");
+        return;
+    }
+    keranjang[idx].jumlah = jumlahBaru;
+    notif(`Jumlah ${keranjang[idx].nama} diubah menjadi ${jumlahBaru}.`, "success");
+    tampilkanUbahJumlah();
+}
+
+/* =====================================================
+   5. HAPUS ITEM DARI KERANJANG
+   ===================================================== */
+function tampilkanHapusItem() {
+    if (keranjang.length === 0) {
+        document.getElementById("konten").innerHTML =
+            `<h2>🗑️ Hapus Item</h2><div class="empty-msg">Keranjang masih kosong.</div>`;
+        return;
+    }
+
+    let html = `<h2>🗑️ Hapus Menu dari Keranjang</h2>
+    <table>
+        <thead>
+            <tr>
+                <th class="center">No</th>
+                <th>Nama Menu</th>
+                <th class="center">Jumlah</th>
+                <th class="num">Subtotal</th>
+                <th class="center">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>`;
+    keranjang.forEach((item, idx) => {
+        html += `<tr>
+            <td class="center">${idx + 1}</td>
+            <td>${escHtml(item.nama)}</td>
+            <td class="center">${item.jumlah}</td>
+            <td class="num">${rupiah(item.harga * item.jumlah)}</td>
+            <td class="center">
+                <button class="btn btn-small btn-danger" onclick="hapusItem(${idx})">Hapus</button>
+            </td>
+        </tr>`;
+    });
+    html += `</tbody></table>`;
+    document.getElementById("konten").innerHTML = html;
+}
+
+function hapusItem(idx) {
+    const nama = keranjang[idx].nama;
+    keranjang.splice(idx, 1);
+    notif(`${nama} berhasil dihapus dari keranjang.`, "success");
+    tampilkanHapusItem();
+}
+
+/* =====================================================
+   6. CHECKOUT & BAYAR
+   ===================================================== */
+function tampilkanCheckout() {
+    if (keranjang.length === 0) {
+        document.getElementById("konten").innerHTML =
+            `<h2>💰 Checkout</h2><div class="empty-msg">Keranjang masih kosong, tidak bisa checkout.</div>`;
+        return;
+    }
+
+    let total = 0;
+    keranjang.forEach(it => total += it.harga * it.jumlah);
+
+    let detailHtml = "";
+    keranjang.forEach(it => {
+        detailHtml += `<div class="struk-line">
+            <span>${escHtml(it.nama)} x${it.jumlah}</span>
+            <span>${rupiah(it.harga * it.jumlah)}</span>
+        </div>`;
+    });
+
+    let diskonHtml = "";
+    if (total >= 50000) {
+        const diskonInfo = Math.floor(total * 0.1);
+        diskonHtml = `<div class="diskon-box">
+            🎉 Info: Anda berhak mendapat diskon 10% = ${rupiah(diskonInfo)}<br>
+            <em>(Diskon hanya informasi, total bayar tetap sesuai total belanja)</em>
+        </div>`;
+    }
+
+    const html = `
+    <h2>💰 Checkout & Bayar</h2>
+    <div class="struk">
+        <h3>Rincian Pesanan</h3>
+        ${detailHtml}
+        <div class="struk-line bold highlight">
+            <span>TOTAL BAYAR</span>
+            <span>${rupiah(total)}</span>
+        </div>
+    </div>
+    ${diskonHtml}
+    <div class="form-group" style="margin-top:16px;">
+        <label for="input-uang">Masukkan Uang Pembayaran (Rp)</label>
+        <input type="number" id="input-uang" min="0" placeholder="Contoh: 100000"
+               style="width:100%;padding:10px 14px;border:2px solid #e0d0c0;border-radius:8px;font-size:1rem;">
+    </div>
+    <button class="btn btn-success" onclick="prosesCheckout(${total})">Bayar Sekarang</button>
+    `;
+    document.getElementById("konten").innerHTML = html;
+    document.getElementById("input-uang").focus();
+}
+
+function prosesCheckout(total) {
+    const uang = parseInt(document.getElementById("input-uang").value);
+
+    if (isNaN(uang) || uang <= 0) {
+        notif("Masukkan uang pembayaran yang valid!", "error");
+        return;
+    }
+    if (uang < total) {
+        notif(`Uang kurang! Anda masih kurang ${rupiah(total - uang)}`, "error");
+        return;
+    }
+
+    const kembalian = uang - total;
+    const diskonInfo = total >= 50000 ? Math.floor(total * 0.1) : 0;
+
+    // Simpan riwayat
+    riwayatPesanan.push({
+        namaPelanggan: namaPelanggan,
+        nomorMeja: nomorMeja,
+        pesanan: keranjang.map(it => ({ ...it })),
+        total: total,
+        diskonInfo: diskonInfo,
+        totalBayar: total,
+        uangBayar: uang,
+        kembalian: kembalian
+    });
+
+    // Tampilkan struk pembayaran
+    let detailHtml = "";
+    keranjang.forEach(it => {
+        detailHtml += `<div class="struk-line">
+            <span>${escHtml(it.nama)} x${it.jumlah}</span>
+            <span>${rupiah(it.harga * it.jumlah)}</span>
+        </div>`;
+    });
+
+    let diskonHtml = "";
+    if (diskonInfo > 0) {
+        diskonHtml = `<div class="struk-line">
+            <span>Info Diskon 10%</span>
+            <span>${rupiah(diskonInfo)}</span>
+        </div>`;
+    }
+
+    const strukHtml = `
+    <h2>✅ Pembayaran Berhasil</h2>
+    <div class="struk">
+        <h3>STRUK PEMBAYARAN</h3>
+        <div class="struk-line"><span>Pelanggan</span><span>${escHtml(namaPelanggan)}</span></div>
+        <div class="struk-line"><span>Nomor Meja</span><span>${escHtml(nomorMeja)}</span></div>
+        <div style="border-top:1px dashed #999;margin:8px 0;"></div>
+        ${detailHtml}
+        ${diskonHtml}
+        <div class="struk-line bold"><span>Total Belanja</span><span>${rupiah(total)}</span></div>
+        <div class="struk-line bold highlight"><span>TOTAL BAYAR</span><span>${rupiah(total)}</span></div>
+        <div class="struk-line"><span>Uang Bayar</span><span>${rupiah(uang)}</span></div>
+        <div class="struk-line bold highlight"><span>Kembalian</span><span>${rupiah(kembalian)}</span></div>
+    </div>
+    <p style="text-align:center;margin-top:16px;color:#28a745;font-weight:600;">
+        🧾 Terima kasih! Pesanan Anda sedang diproses.
+    </p>
+    <div style="text-align:center;margin-top:12px;">
+        <button class="btn" onclick="tampilkanMenu()">Pesan Lagi</button>
+    </div>
+    `;
+
+    // Kosongkan keranjang
+    keranjang = [];
+
+    document.getElementById("konten").innerHTML = strukHtml;
+    notif("Pembayaran berhasil!", "success");
+}
+
+/* =====================================================
+   7. LIHAT RIWAYAT PESANAN
+   ===================================================== */
+function tampilkanRiwayat() {
+    if (riwayatPesanan.length === 0) {
+        document.getElementById("konten").innerHTML =
+            `<h2>📜 Riwayat Pesanan</h2><div class="empty-msg">Belum ada riwayat pesanan.</div>`;
+        return;
+    }
+
+    let html = `<h2>📜 Riwayat Pesanan</h2>`;
+    riwayatPesanan.forEach((p, i) => {
+        let detail = "";
+        p.pesanan.forEach(it => {
+            detail += `• ${escHtml(it.nama)} x${it.jumlah} = ${rupiah(it.harga * it.jumlah)}<br>`;
+        });
+
+        let diskonStr = p.diskonInfo > 0
+            ? `<strong>Info Diskon:</strong> ${rupiah(p.diskonInfo)} (tidak mengurangi total)<br>`
+            : "";
+
+        html += `
+        <div class="riwayat-card">
+            <h3>Pesanan #${i + 1}</h3>
+            <div class="detail">
+                <strong>Pelanggan:</strong> ${escHtml(p.namaPelanggan)}<br>
+                <strong>Nomor Meja:</strong> ${escHtml(p.nomorMeja)}<br>
+                <strong>Detail Pesanan:</strong><br>
+                ${detail}
+                <strong>Total:</strong> ${rupiah(p.total)}<br>
+                ${diskonStr}
+                <strong>Total Bayar:</strong> ${rupiah(p.totalBayar)}<br>
+                <strong>Uang Bayar:</strong> ${rupiah(p.uangBayar)}<br>
+                <strong>Kembalian:</strong> ${rupiah(p.kembalian)}
+            </div>
+        </div>`;
+    });
+    document.getElementById("konten").innerHTML = html;
+}
+
+/* =====================================================
+   0. KELUAR
+   ===================================================== */
+function keluar() {
+    if (confirm(`Terima kasih ${namaPelanggan}, yakin ingin keluar?`)) {
+        // Reset semua
+        keranjang = [];
+        riwayatPesanan = [];
+        namaPelanggan = "";
+        nomorMeja = "";
+        document.getElementById("input-nama").value = "";
+        document.getElementById("input-meja").value = "";
+        document.getElementById("identitas-section").style.display = "block";
+        document.getElementById("app-section").style.display = "none";
+        document.getElementById("konten").innerHTML = "";
+        notif("Sampai jumpa lagi! 👋", "info");
+    }
+}
+</script>
+
 </body>
 </html>
+
+
+
+
