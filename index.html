@@ -35,30 +35,13 @@
         text-align: center;
     }
 
-    header h1 {
-        font-size: 1.6rem;
-        margin-bottom: 4px;
-    }
+    header h1 { font-size: 1.6rem; margin-bottom: 4px; }
+    header p { font-size: 0.9rem; opacity: 0.9; }
 
-    header p {
-        font-size: 0.9rem;
-        opacity: 0.9;
-    }
+    #identitas-section { padding: 30px; }
+    #identitas-section h2 { color: #8b4513; margin-bottom: 16px; font-size: 1.2rem; }
 
-    /* Form identitas */
-    #identitas-section {
-        padding: 30px;
-    }
-
-    #identitas-section h2 {
-        color: #8b4513;
-        margin-bottom: 16px;
-        font-size: 1.2rem;
-    }
-
-    .form-group {
-        margin-bottom: 14px;
-    }
+    .form-group { margin-bottom: 14px; }
 
     .form-group label {
         display: block;
@@ -68,7 +51,8 @@
         color: #5a3a1a;
     }
 
-    .form-group input {
+    .form-group input,
+    .form-group select {
         width: 100%;
         padding: 10px 14px;
         border: 2px solid #e0d0c0;
@@ -77,12 +61,12 @@
         transition: border-color 0.2s;
     }
 
-    .form-group input:focus {
+    .form-group input:focus,
+    .form-group select:focus {
         outline: none;
         border-color: #d2691e;
     }
 
-    /* Tombol umum */
     .btn {
         background: #d2691e;
         color: #fff;
@@ -108,12 +92,8 @@
     .btn-success { background: #28a745; }
     .btn-success:hover { background: #1e7e34; }
 
-    .btn-small {
-        padding: 6px 12px;
-        font-size: 0.85rem;
-    }
+    .btn-small { padding: 6px 12px; font-size: 0.85rem; }
 
-    /* Layout utama */
     #app-section { display: none; }
 
     .user-info {
@@ -126,7 +106,6 @@
 
     .user-info strong { color: #8b4513; }
 
-    /* Menu utama */
     .main-menu {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -165,10 +144,7 @@
         color: #fff;
     }
 
-    /* Konten */
-    .content {
-        padding: 24px;
-    }
+    .content { padding: 24px; }
 
     .content h2 {
         color: #8b4513;
@@ -178,7 +154,6 @@
         padding-bottom: 8px;
     }
 
-    /* Tabel menu & keranjang */
     table {
         width: 100%;
         border-collapse: collapse;
@@ -186,10 +161,7 @@
         font-size: 0.9rem;
     }
 
-    thead {
-        background: #8b4513;
-        color: #fff;
-    }
+    thead { background: #8b4513; color: #fff; }
 
     th, td {
         padding: 10px 12px;
@@ -209,7 +181,6 @@
         background: #fff8f0;
     }
 
-    /* Pesan kosong */
     .empty-msg {
         text-align: center;
         padding: 40px 20px;
@@ -217,7 +188,6 @@
         font-style: italic;
     }
 
-    /* Input jumlah */
     .qty-input {
         width: 70px;
         padding: 6px 8px;
@@ -227,12 +197,8 @@
         font-size: 0.9rem;
     }
 
-    .qty-input:focus {
-        outline: none;
-        border-color: #d2691e;
-    }
+    .qty-input:focus { outline: none; border-color: #d2691e; }
 
-    /* Notifikasi */
     #notif {
         position: fixed;
         top: 20px;
@@ -253,7 +219,6 @@
     #notif.error { background: #dc3545; }
     #notif.info { background: #17a2b8; }
 
-    /* Info diskon */
     .diskon-box {
         background: #fff3cd;
         border-left: 4px solid #ffc107;
@@ -264,7 +229,6 @@
         font-size: 0.9rem;
     }
 
-    /* Struk pembayaran */
     .struk {
         background: #f8f9fa;
         border: 2px dashed #d2691e;
@@ -300,7 +264,6 @@
         font-size: 1rem;
     }
 
-    /* Kartu riwayat */
     .riwayat-card {
         background: #faf5ef;
         border-left: 4px solid #d2691e;
@@ -323,16 +286,118 @@
 
     .riwayat-card .detail strong { color: #5a3a1a; }
 
-    /* Responsive */
+    /* ====== METODE PEMBAYARAN ====== */
+    .metode-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin: 16px 0;
+    }
+
+    .metode-card {
+        border: 2px solid #e0d0c0;
+        border-radius: 12px;
+        padding: 16px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: #fff;
+    }
+
+    .metode-card:hover {
+        border-color: #d2691e;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(210, 105, 30, 0.15);
+    }
+
+    .metode-card.active {
+        border-color: #d2691e;
+        background: #fff8f0;
+        box-shadow: 0 4px 12px rgba(210, 105, 30, 0.25);
+    }
+
+    .metode-card .icon {
+        font-size: 2.2rem;
+        margin-bottom: 6px;
+        display: block;
+    }
+
+    .metode-card .label {
+        font-weight: 700;
+        color: #5a3a1a;
+        font-size: 0.95rem;
+    }
+
+    .metode-card .sub {
+        font-size: 0.78rem;
+        color: #999;
+        margin-top: 2px;
+    }
+
+    /* QRIS */
+    .qris-box {
+        background: #fff;
+        border: 2px solid #e0d0c0;
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        margin: 16px 0;
+    }
+
+    .qris-box .qris-label {
+        font-weight: 700;
+        color: #8b4513;
+        font-size: 1.1rem;
+        margin-bottom: 4px;
+    }
+
+    .qris-box .qris-sub {
+        font-size: 0.82rem;
+        color: #666;
+        margin-bottom: 16px;
+    }
+
+    .qr-frame {
+        display: inline-block;
+        padding: 16px;
+        background: #fff;
+        border: 3px solid #8b4513;
+        border-radius: 12px;
+        margin-bottom: 12px;
+    }
+
+    .qr-frame canvas {
+        display: block;
+    }
+
+    .qris-amount {
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: #8b4513;
+        margin: 8px 0;
+    }
+
+    .qris-note {
+        font-size: 0.8rem;
+        color: #999;
+        font-style: italic;
+    }
+
+    .pembayaran-section {
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px dashed #e0d0c0;
+    }
+
     @media (max-width: 600px) {
         body { padding: 10px; }
         header h1 { font-size: 1.2rem; }
         .main-menu { grid-template-columns: 1fr 1fr; }
         table { font-size: 0.82rem; }
         th, td { padding: 8px 6px; }
+        .metode-grid { grid-template-columns: 1fr; }
     }
 
-    /* Section hidden */
     .hidden { display: none; }
 </style>
 </head>
@@ -364,7 +429,6 @@
             👤 <strong id="info-nama">-</strong> &nbsp;|&nbsp; 🪑 Meja <strong id="info-meja">-</strong>
         </div>
 
-        <!-- Menu Utama -->
         <nav class="main-menu">
             <button onclick="tampilkanMenu()">1. Tampilkan Menu</button>
             <button onclick="tampilkanTambahPesanan()">2. Tambah Pesanan</button>
@@ -376,12 +440,10 @@
             <button class="keluar" onclick="keluar()">0. Keluar</button>
         </nav>
 
-        <!-- Konten Dinamis -->
         <div class="content" id="konten"></div>
     </section>
 </div>
 
-<!-- Notifikasi -->
 <div id="notif"></div>
 
 <script>
@@ -406,6 +468,10 @@ let riwayatPesanan = [];
 let namaPelanggan = "";
 let nomorMeja = "";
 
+/* State checkout */
+let metodePembayaran = null;   // "qris" atau "tunai"
+let totalCheckout = 0;
+
 /* =====================================================
    UTILITAS
    ===================================================== */
@@ -418,9 +484,7 @@ function notif(pesan, tipe = "info") {
     el.textContent = pesan;
     el.className = tipe + " show";
     clearTimeout(el._timer);
-    el._timer = setTimeout(() => {
-        el.classList.remove("show");
-    }, 2500);
+    el._timer = setTimeout(() => el.classList.remove("show"), 2500);
 }
 
 function escHtml(str) {
@@ -429,6 +493,63 @@ function escHtml(str) {
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;");
+}
+
+/* =====================================================
+   GENERATOR QR CODE SEDERHANA (pola acak deterministic)
+   ===================================================== */
+function gambarQRCode(canvas, seedText) {
+    const ctx = canvas.getContext("2d");
+    const size = canvas.width;
+    const cells = 25;              // 25x25 modul
+    const cellSize = size / cells;
+
+    // background
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, size, size);
+
+    // seed sederhana dari string
+    let seed = 0;
+    for (let i = 0; i < seedText.length; i++) {
+        seed = (seed * 31 + seedText.charCodeAt(i)) >>> 0;
+    }
+    function rnd() {
+        seed = (seed * 1664525 + 1013904223) >>> 0;
+        return seed / 4294967296;
+    }
+
+    // isi pola acak
+    ctx.fillStyle = "#000000";
+    for (let y = 0; y < cells; y++) {
+        for (let x = 0; x < cells; x++) {
+            // area finder pattern (3 kotak sudut) -> skip, gambar manual
+            const inFinder =
+                (x < 7 && y < 7) ||
+                (x >= cells - 7 && y < 7) ||
+                (x < 7 && y >= cells - 7);
+            if (inFinder) continue;
+
+            if (rnd() > 0.5) {
+                ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+            }
+        }
+    }
+
+    // gambar finder pattern (kotak sudut khas QR)
+    function drawFinder(px, py) {
+        // hitam luar
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(px, py, 7 * cellSize, 7 * cellSize);
+        // putih tengah
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(px + cellSize, py + cellSize, 5 * cellSize, 5 * cellSize);
+        // hitam dalam
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(px + 2 * cellSize, py + 2 * cellSize, 3 * cellSize, 3 * cellSize);
+    }
+    drawFinder(0, 0);
+    drawFinder((cells - 7) * cellSize, 0);
+    drawFinder(0, (cells - 7) * cellSize);
 }
 
 /* =====================================================
@@ -492,13 +613,11 @@ function tampilkanTambahPesanan() {
     <h2>➕ Tambah Pesanan</h2>
     <div class="form-group">
         <label for="pilih-menu">Pilih Menu</label>
-        <select id="pilih-menu" style="width:100%;padding:10px 14px;border:2px solid #e0d0c0;border-radius:8px;font-size:1rem;">
-            ${opsi}
-        </select>
+        <select id="pilih-menu">${opsi}</select>
     </div>
     <div class="form-group">
         <label for="input-jumlah">Jumlah Pesanan</label>
-        <input type="number" id="input-jumlah" min="1" value="1" style="width:100%;padding:10px 14px;border:2px solid #e0d0c0;border-radius:8px;font-size:1rem;">
+        <input type="number" id="input-jumlah" min="1" value="1">
     </div>
     <button class="btn" onclick="prosesTambahPesanan()">Tambah ke Keranjang</button>
     `;
@@ -512,7 +631,6 @@ function prosesTambahPesanan() {
     if (!menu[idMenu]) { notif("Menu tidak ditemukan!", "error"); return; }
     if (!jumlah || jumlah <= 0) { notif("Jumlah harus lebih dari 0!", "error"); return; }
 
-    // Cek apakah menu sudah ada di keranjang
     const existing = keranjang.find(it => it.id === idMenu);
     if (existing) {
         existing.jumlah += jumlah;
@@ -526,7 +644,6 @@ function prosesTambahPesanan() {
         });
         notif(`${menu[idMenu].nama} x${jumlah} ditambahkan ke keranjang.`, "success");
     }
-
     tampilkanKeranjang();
 }
 
@@ -567,8 +684,7 @@ function tampilkanKeranjang() {
     html += `<tr class="total-row">
         <td colspan="4">TOTAL</td>
         <td class="num">${rupiah(total)}</td>
-    </tr>`;
-    html += `</tbody></table>`;
+    </tr></tbody></table>`;
 
     if (total >= 50000) {
         html += `<div class="diskon-box">🎉 Total belanja Anda memenuhi syarat diskon 10% (hanya info, tidak mengurangi total bayar).</div>`;
@@ -604,12 +720,8 @@ function tampilkanUbahJumlah() {
             <td class="center">${idx + 1}</td>
             <td>${escHtml(item.nama)}</td>
             <td class="num">${rupiah(item.harga)}</td>
-            <td class="center">
-                <input type="number" class="qty-input" id="qty-${idx}" min="1" value="${item.jumlah}">
-            </td>
-            <td class="center">
-                <button class="btn btn-small btn-success" onclick="simpanUbahJumlah(${idx})">Simpan</button>
-            </td>
+            <td class="center"><input type="number" class="qty-input" id="qty-${idx}" min="1" value="${item.jumlah}"></td>
+            <td class="center"><button class="btn btn-small btn-success" onclick="simpanUbahJumlah(${idx})">Simpan</button></td>
         </tr>`;
     });
     html += `</tbody></table>`;
@@ -655,9 +767,7 @@ function tampilkanHapusItem() {
             <td>${escHtml(item.nama)}</td>
             <td class="center">${item.jumlah}</td>
             <td class="num">${rupiah(item.harga * item.jumlah)}</td>
-            <td class="center">
-                <button class="btn btn-small btn-danger" onclick="hapusItem(${idx})">Hapus</button>
-            </td>
+            <td class="center"><button class="btn btn-small btn-danger" onclick="hapusItem(${idx})">Hapus</button></td>
         </tr>`;
     });
     html += `</tbody></table>`;
@@ -672,7 +782,7 @@ function hapusItem(idx) {
 }
 
 /* =====================================================
-   6. CHECKOUT & BAYAR
+   6. CHECKOUT & BAYAR  (dengan metode QRIS / Tunai)
    ===================================================== */
 function tampilkanCheckout() {
     if (keranjang.length === 0) {
@@ -681,8 +791,9 @@ function tampilkanCheckout() {
         return;
     }
 
-    let total = 0;
-    keranjang.forEach(it => total += it.harga * it.jumlah);
+    totalCheckout = 0;
+    keranjang.forEach(it => totalCheckout += it.harga * it.jumlah);
+    metodePembayaran = null;   // reset pilihan
 
     let detailHtml = "";
     keranjang.forEach(it => {
@@ -693,8 +804,8 @@ function tampilkanCheckout() {
     });
 
     let diskonHtml = "";
-    if (total >= 50000) {
-        const diskonInfo = Math.floor(total * 0.1);
+    if (totalCheckout >= 50000) {
+        const diskonInfo = Math.floor(totalCheckout * 0.1);
         diskonHtml = `<div class="diskon-box">
             🎉 Info: Anda berhak mendapat diskon 10% = ${rupiah(diskonInfo)}<br>
             <em>(Diskon hanya informasi, total bayar tetap sesuai total belanja)</em>
@@ -708,22 +819,97 @@ function tampilkanCheckout() {
         ${detailHtml}
         <div class="struk-line bold highlight">
             <span>TOTAL BAYAR</span>
-            <span>${rupiah(total)}</span>
+            <span>${rupiah(totalCheckout)}</span>
         </div>
     </div>
     ${diskonHtml}
-    <div class="form-group" style="margin-top:16px;">
-        <label for="input-uang">Masukkan Uang Pembayaran (Rp)</label>
-        <input type="number" id="input-uang" min="0" placeholder="Contoh: 100000"
-               style="width:100%;padding:10px 14px;border:2px solid #e0d0c0;border-radius:8px;font-size:1rem;">
+
+    <div class="pembayaran-section">
+        <h3 style="color:#8b4513;margin-bottom:4px;">Pilih Metode Pembayaran</h3>
+        <p style="font-size:0.85rem;color:#888;margin-bottom:4px;">Silakan pilih salah satu:</p>
+
+        <div class="metode-grid">
+            <div class="metode-card" id="metode-qris" onclick="pilihMetode('qris')">
+                <span class="icon">📱</span>
+                <div class="label">QRIS</div>
+                <div class="sub">Scan QR dengan e-wallet / m-banking</div>
+            </div>
+            <div class="metode-card" id="metode-tunai" onclick="pilihMetode('tunai')">
+                <span class="icon">💵</span>
+                <div class="label">Tunai</div>
+                <div class="sub">Bayar langsung di kasir</div>
+            </div>
+        </div>
+
+        <div id="area-pembayaran"></div>
     </div>
-    <button class="btn btn-success" onclick="prosesCheckout(${total})">Bayar Sekarang</button>
     `;
     document.getElementById("konten").innerHTML = html;
-    document.getElementById("input-uang").focus();
 }
 
-function prosesCheckout(total) {
+function pilihMetode(metode) {
+    metodePembayaran = metode;
+
+    // highlight kartu
+    document.getElementById("metode-qris").classList.toggle("active", metode === "qris");
+    document.getElementById("metode-tunai").classList.toggle("active", metode === "tunai");
+
+    const area = document.getElementById("area-pembayaran");
+
+    if (metode === "qris") {
+        area.innerHTML = `
+            <div class="qris-box">
+                <div class="qris-label">📱 Pembayaran QRIS</div>
+                <div class="qris-sub">Scan QR di bawah menggunakan aplikasi e-wallet / m-banking Anda</div>
+                <div class="qr-frame">
+                    <canvas id="canvas-qr" width="200" height="200"></canvas>
+                </div>
+                <div class="qris-amount">${rupiah(totalCheckout)}</div>
+                <div class="qris-note">*QR simulasi untuk demo. Setelah scan, klik tombol di bawah.</div>
+            </div>
+            <button class="btn btn-success btn-block" onclick="prosesCheckoutQRIS()">
+                ✅ Saya Sudah Bayar via QRIS
+            </button>
+        `;
+        // gambar QR setelah elemen ada di DOM
+        const canvas = document.getElementById("canvas-qr");
+        gambarQRCode(canvas, namaPelanggan + "-" + nomorMeja + "-" + totalCheckout + "-" + Date.now());
+
+    } else if (metode === "tunai") {
+        area.innerHTML = `
+            <div class="form-group" style="margin-top:12px;">
+                <label for="input-uang">Masukkan Uang Pembayaran (Rp)</label>
+                <input type="number" id="input-uang" min="0" placeholder="Contoh: 100000">
+            </div>
+            <button class="btn btn-success btn-block" onclick="prosesCheckoutTunai()">
+                💵 Bayar Tunai
+            </button>
+        `;
+        document.getElementById("input-uang").focus();
+    }
+}
+
+/* Checkout QRIS: uang dianggap pas, kembalian 0 */
+function prosesCheckoutQRIS() {
+    if (!metodePembayaran) {
+        notif("Pilih metode pembayaran dulu!", "error");
+        return;
+    }
+
+    const total = totalCheckout;
+    const diskonInfo = total >= 50000 ? Math.floor(total * 0.1) : 0;
+    const uangBayar = total;      // QRIS = bayar pas
+    const kembalian = 0;
+
+    simpanRiwayat(total, diskonInfo, uangBayar, kembalian, "QRIS");
+    tampilkanStruk(total, diskonInfo, uangBayar, kembalian, "QRIS");
+    keranjang = [];
+    notif("Pembayaran QRIS berhasil!", "success");
+}
+
+/* Checkout Tunai: ada uang bayar + kembalian */
+function prosesCheckoutTunai() {
+    const total = totalCheckout;
     const uang = parseInt(document.getElementById("input-uang").value);
 
     if (isNaN(uang) || uang <= 0) {
@@ -738,7 +924,13 @@ function prosesCheckout(total) {
     const kembalian = uang - total;
     const diskonInfo = total >= 50000 ? Math.floor(total * 0.1) : 0;
 
-    // Simpan riwayat
+    simpanRiwayat(total, diskonInfo, uang, kembalian, "Tunai");
+    tampilkanStruk(total, diskonInfo, uang, kembalian, "Tunai");
+    keranjang = [];
+    notif("Pembayaran tunai berhasil!", "success");
+}
+
+function simpanRiwayat(total, diskonInfo, uangBayar, kembalian, metode) {
     riwayatPesanan.push({
         namaPelanggan: namaPelanggan,
         nomorMeja: nomorMeja,
@@ -746,13 +938,18 @@ function prosesCheckout(total) {
         total: total,
         diskonInfo: diskonInfo,
         totalBayar: total,
-        uangBayar: uang,
-        kembalian: kembalian
+        uangBayar: uangBayar,
+        kembalian: kembalian,
+        metode: metode
     });
+}
 
-    // Tampilkan struk pembayaran
+function tampilkanStruk(total, diskonInfo, uangBayar, kembalian, metode) {
+    // Karena keranjang sudah / akan dikosongkan, ambil dari riwayat terakhir
+    const data = riwayatPesanan[riwayatPesanan.length - 1];
+
     let detailHtml = "";
-    keranjang.forEach(it => {
+    data.pesanan.forEach(it => {
         detailHtml += `<div class="struk-line">
             <span>${escHtml(it.nama)} x${it.jumlah}</span>
             <span>${rupiah(it.harga * it.jumlah)}</span>
@@ -767,19 +964,33 @@ function prosesCheckout(total) {
         </div>`;
     }
 
+    let pembayaranHtml = "";
+    if (metode === "QRIS") {
+        pembayaranHtml = `
+            <div class="struk-line"><span>Metode</span><span>📱 QRIS</span></div>
+            <div class="struk-line"><span>Dibayar (QRIS)</span><span>${rupiah(uangBayar)}</span></div>
+            <div class="struk-line bold highlight"><span>Kembalian</span><span>Rp 0 (bayar pas)</span></div>
+        `;
+    } else {
+        pembayaranHtml = `
+            <div class="struk-line"><span>Metode</span><span>💵 Tunai</span></div>
+            <div class="struk-line"><span>Uang Bayar</span><span>${rupiah(uangBayar)}</span></div>
+            <div class="struk-line bold highlight"><span>Kembalian</span><span>${rupiah(kembalian)}</span></div>
+        `;
+    }
+
     const strukHtml = `
     <h2>✅ Pembayaran Berhasil</h2>
     <div class="struk">
         <h3>STRUK PEMBAYARAN</h3>
-        <div class="struk-line"><span>Pelanggan</span><span>${escHtml(namaPelanggan)}</span></div>
-        <div class="struk-line"><span>Nomor Meja</span><span>${escHtml(nomorMeja)}</span></div>
+        <div class="struk-line"><span>Pelanggan</span><span>${escHtml(data.namaPelanggan)}</span></div>
+        <div class="struk-line"><span>Nomor Meja</span><span>${escHtml(data.nomorMeja)}</span></div>
         <div style="border-top:1px dashed #999;margin:8px 0;"></div>
         ${detailHtml}
         ${diskonHtml}
         <div class="struk-line bold"><span>Total Belanja</span><span>${rupiah(total)}</span></div>
         <div class="struk-line bold highlight"><span>TOTAL BAYAR</span><span>${rupiah(total)}</span></div>
-        <div class="struk-line"><span>Uang Bayar</span><span>${rupiah(uang)}</span></div>
-        <div class="struk-line bold highlight"><span>Kembalian</span><span>${rupiah(kembalian)}</span></div>
+        ${pembayaranHtml}
     </div>
     <p style="text-align:center;margin-top:16px;color:#28a745;font-weight:600;">
         🧾 Terima kasih! Pesanan Anda sedang diproses.
@@ -789,11 +1000,7 @@ function prosesCheckout(total) {
     </div>
     `;
 
-    // Kosongkan keranjang
-    keranjang = [];
-
     document.getElementById("konten").innerHTML = strukHtml;
-    notif("Pembayaran berhasil!", "success");
 }
 
 /* =====================================================
@@ -817,19 +1024,29 @@ function tampilkanRiwayat() {
             ? `<strong>Info Diskon:</strong> ${rupiah(p.diskonInfo)} (tidak mengurangi total)<br>`
             : "";
 
+        const metodeStr = p.metode === "QRIS"
+            ? `📱 QRIS (bayar pas)`
+            : `💵 Tunai`;
+
+        const bayarStr = p.metode === "QRIS"
+            ? `<strong>Dibayar QRIS:</strong> ${rupiah(p.uangBayar)}<br>
+               <strong>Kembalian:</strong> Rp 0 (bayar pas)<br>`
+            : `<strong>Uang Bayar:</strong> ${rupiah(p.uangBayar)}<br>
+               <strong>Kembalian:</strong> ${rupiah(p.kembalian)}<br>`;
+
         html += `
         <div class="riwayat-card">
             <h3>Pesanan #${i + 1}</h3>
             <div class="detail">
                 <strong>Pelanggan:</strong> ${escHtml(p.namaPelanggan)}<br>
                 <strong>Nomor Meja:</strong> ${escHtml(p.nomorMeja)}<br>
+                <strong>Metode:</strong> ${metodeStr}<br>
                 <strong>Detail Pesanan:</strong><br>
                 ${detail}
                 <strong>Total:</strong> ${rupiah(p.total)}<br>
                 ${diskonStr}
                 <strong>Total Bayar:</strong> ${rupiah(p.totalBayar)}<br>
-                <strong>Uang Bayar:</strong> ${rupiah(p.uangBayar)}<br>
-                <strong>Kembalian:</strong> ${rupiah(p.kembalian)}
+                ${bayarStr}
             </div>
         </div>`;
     });
@@ -841,11 +1058,12 @@ function tampilkanRiwayat() {
    ===================================================== */
 function keluar() {
     if (confirm(`Terima kasih ${namaPelanggan}, yakin ingin keluar?`)) {
-        // Reset semua
         keranjang = [];
         riwayatPesanan = [];
         namaPelanggan = "";
         nomorMeja = "";
+        metodePembayaran = null;
+        totalCheckout = 0;
         document.getElementById("input-nama").value = "";
         document.getElementById("input-meja").value = "";
         document.getElementById("identitas-section").style.display = "block";
@@ -858,3 +1076,4 @@ function keluar() {
 
 </body>
 </html>
+
